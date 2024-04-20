@@ -41,6 +41,7 @@ namespace RayTracer::Primitives {
             virtual double getReflection() const = 0;
             virtual RayTracer::Primitives::Axis getAxis() const = 0;
 
+            virtual bool hit(const Ray& ray) const = 0;
 
         protected:
         private:

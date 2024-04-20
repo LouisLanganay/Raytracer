@@ -36,8 +36,9 @@ namespace RayTracer::Primitives {
             double getReflection() const override;
             RayTracer::Primitives::Axis getAxis() const override;
 
+            virtual bool hit(const Ray& ray) const = 0;
+
         protected:
-        private:
             std::string _type;
             Point3D _origin;
             Point3D _rotation;
@@ -46,6 +47,7 @@ namespace RayTracer::Primitives {
             double _transparency;
             double _reflection;
             Axis _axis;
+        private:
     };
 }
 
