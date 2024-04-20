@@ -6,6 +6,7 @@
 */
 
 #include "Render.hpp"
+#include <iostream>
 
 namespace RayTracer {
     Render::Render(std::unique_ptr<Scene> &scene) : _scene(scene.release())
@@ -22,12 +23,14 @@ namespace RayTracer {
         int height = camera->getResolution()._y;
         int width = camera->getResolution()._x;
 
+        std::cout << "P3\n" << width << " " << height << "\n255\n";
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                printf("x: %d, y: %d\n", x, y);
-                // Ray ray = camera->generateRay(x, y);
-                // Color color = trace(ray);
-                // setPixel(x, y, color);
+                double u = static_cast<double>(x) / width;
+                double v = static_cast<double>(y) / height;
+                Ray ray = camera->generateRay(u, v);
+                Vector3D color = _scene->traceRay(ray);
+                _scene->setPixel(x, y, color);
             }
         }
     }
