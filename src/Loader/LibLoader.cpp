@@ -31,7 +31,6 @@ namespace RayTracer {
                     default:
                         break;
                 }
-                std::cout << "Plugin " << entry.path() << " loaded" << std::endl;
             }
         }
     }
