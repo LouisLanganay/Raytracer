@@ -12,12 +12,14 @@ LIB 		= lib_ambienteLight.so
 VPATH 		:= ./src
 VPATH 		+= ../
 VPATH 		+= ../../../src/Point
+VPATH 		+= ../../../src/Ray
 
 vpath %.cpp $(VPATH)
 
 SRC 		:= AmbienteLight.cpp
 SRC 		+= ALight.cpp
 SRC 		+= Point3D.cpp
+SRC 		+= Ray.cpp
 
 CFLAGS 		= -Wall
 
