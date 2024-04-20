@@ -16,6 +16,8 @@ namespace RayTracer::Primitives {
             Sphere();
             ~Sphere();
 
+            bool hit(const Ray& ray) const override;
+
         protected:
         private:
     };
