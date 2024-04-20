@@ -72,7 +72,7 @@ $(NAME): $(OBJ)
 	$(_U_WHITE)$(shell echo "$?" | wc -w) file(s) compiled${_END}."
 
 plugins:
-	@ make -s -C ./libs/lights/ambienteLight
+	@ make -s -C ./libs/lights/AmbienteLight
 	@ make -s -C ./libs/primitives/Sphere
 
 debug: CFLAGS += -g
@@ -84,7 +84,7 @@ clean:
 	@ $(RM) vgcore.*
 	@ $(RM) coding-style-reports.log
 	@ $(RM)	$(OBJ)
-	@ make clean -s -C ./libs/lights/ambienteLight
+	@ make clean -s -C ./libs/lights/AmbienteLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
@@ -93,19 +93,20 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    coding-style-reports.log${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbienteLight${_END}"
 
 fclean: clean
 	@ $(RM) -r $(BUILD_DIR)
 	@ $(RM)	$(NAME)
 	@ $(RM)	$(NAME)_tests
 	@ $(RM) -r doc
-	@ make fclean -s -C ./libs/lights/ambienteLight
+	@ make fclean -s -C ./libs/lights/AmbienteLight
 	@ make fclean -s -C ./libs/primitives/Sphere
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    doc${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/ambienteLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbienteLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
 
 re: fclean all
