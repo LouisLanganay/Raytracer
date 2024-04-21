@@ -8,15 +8,22 @@
 #include "Camera.hpp"
 
 namespace RayTracer {
-    Camera::Camera()
+    Camera::Camera(
+        Point3D origin,
+        Point3D resolution
+    ) : _origin(origin),
+        _resolution(resolution)
     {
+        _screen = Rectangle3D(
+            Point3D(_origin._x, _origin._y, 200),
+            Vector3D(resolution._x, 0, 0),
+            Vector3D(0, resolution._y, 0)
+        );
     }
 
     void Camera::setResolution(int x, int y)
     {
         _resolution = Point3D(x, y, 0);
-        _horizontal = Vector3D(x, 0, 0);
-        _vertical = Vector3D(0, y, 0);
     }
 
     void Camera::setFov(double fov)
@@ -56,9 +63,8 @@ namespace RayTracer {
 
     Ray Camera::generateRay(double u, double v) const
     {
-        Point3D originScreen(-_origin._x / 2, -_origin._y / 2, 100);
-        Point3D target = originScreen + _horizontal * u + _vertical * v;
-        Vector3D direction = target - _origin;
+        Point3D screenPoint = _screen.pointAt(u, v);
+        Vector3D direction = (screenPoint - _origin).getNormalized();
 
         return Ray(_origin, direction);
     }

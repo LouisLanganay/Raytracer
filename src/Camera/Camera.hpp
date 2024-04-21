@@ -10,6 +10,7 @@
 
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
+#include "Rectangle3D.hpp"
 #include "Ray.hpp"
 #include <cmath>
 #define M_PI 3.14159265358979323846
@@ -17,7 +18,10 @@
 namespace RayTracer {
     class Camera {
         public:
-            Camera();
+            Camera(
+                Point3D origin,
+                Point3D resolution
+            );
             ~Camera() = default;
 
             void setResolution(int x, int y);
@@ -34,12 +38,13 @@ namespace RayTracer {
 
         protected:
         private:
-            Point3D _resolution;
             Point3D _origin;
+
+            Rectangle3D _screen;
+
+            Point3D _resolution;
             Point3D _rotation;
 
-            Vector3D _horizontal;
-            Vector3D _vertical;
             double _fov;
     };
 }
