@@ -68,22 +68,33 @@ namespace RayTracer {
             !setting["rotation"]["y"].isNumber() || !setting["rotation"]["z"].isNumber())
             throw ParserException("Camera must have a rotation group");
 
-        std::unique_ptr<Camera> camera = std::make_unique<Camera>();
-        camera->setOrigin(
-            parseDouble(setting["position"]["x"]),
-            parseDouble(setting["position"]["y"]),
-            parseDouble(setting["position"]["z"])
+        std::unique_ptr<Camera> camera = std::make_unique<Camera>(
+            Point3D(
+                    parseDouble(setting["position"]["x"]),
+                    parseDouble(setting["position"]["y"]),
+                    parseDouble(setting["position"]["z"])
+            ),
+            Point3D(
+                parseDouble(setting["resolution"]["x"]),
+                parseDouble(setting["resolution"]["y"]),
+                0
+            )
         );
-        camera->setFov(parseDouble(setting["fieldOfView"]));
-        camera->setResolution(
-            parseDouble(setting["resolution"]["x"]),
-            parseDouble(setting["resolution"]["y"])
-        );
-        camera->setRotation(
-            parseDouble(setting["rotation"]["x"]),
-            parseDouble(setting["rotation"]["y"]),
-            parseDouble(setting["rotation"]["z"])
-        );
+        //camera->setOrigin(
+        //    parseDouble(setting["position"]["x"]),
+        //    parseDouble(setting["position"]["y"]),
+        //    parseDouble(setting["position"]["z"])
+        //);
+        //camera->setFov(parseDouble(setting["fieldOfView"]));
+        //camera->setResolution(
+        //    parseDouble(setting["resolution"]["x"]),
+        //    parseDouble(setting["resolution"]["y"])
+        //);
+        //camera->setRotation(
+        //    parseDouble(setting["rotation"]["x"]),
+        //    parseDouble(setting["rotation"]["y"]),
+        //    parseDouble(setting["rotation"]["z"])
+        //);
         _scene->setCamera(camera);
     }
 
