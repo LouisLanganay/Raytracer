@@ -10,6 +10,7 @@
 
 #include "../ARender.hpp"
 #include "../../../src/Camera/Camera.hpp"
+#include <mutex>
 
 namespace RayTracer::Render {
     class PPMRender : public ARender {
@@ -18,8 +19,14 @@ namespace RayTracer::Render {
             virtual ~PPMRender() = default;
 
             virtual void render(Scene &scene) override;
+            void updateGlobalProgress(int& globalProgress, int progress, int totalPixels);
         protected:
         private:
+            std::vector<std::vector<Vector3D>> _image;
+            std::mutex _mutex;
+            int _pixelsRendered;
+
+            void renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel);
     };
 
 }

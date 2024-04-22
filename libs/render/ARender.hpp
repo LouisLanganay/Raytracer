@@ -21,11 +21,19 @@ namespace RayTracer::Render {
 
             virtual void render(Scene &scene) = 0;
             void setFilename(const std::string &filename) override;
+            Vector3D castRay(double u, double v, const RayTracer::Scene &scene, std::size_t depth);
+            Vector3D castRay(
+                const Ray &ray,
+                const RayTracer::Scene &scene,
+                std::size_t depth,
+                Primitives::IPrimitive *lastPrimitive = nullptr
+            );
 
         protected:
             std::string _filename;
-            void updateProgress(int pixelsRendered, int totalPixels);
+            void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
         private:
+            std::string _message;
     };
 
 }
