@@ -8,7 +8,6 @@
 #include <iostream>
 #include "LibLoader.hpp"
 #include "Parser.hpp"
-#include "Render.hpp"
 
 void displayHelp()
 {
@@ -32,7 +31,9 @@ int main(int ac, char **av)
     libLoader.loadPlugins();
     RayTracer::Parser parser(av[1], libLoader);
     parser.parse();
-    RayTracer::Render render(parser.getScene());
-    render.render();
+    std::unique_ptr<RayTracer::Scene> scene = std::move(parser.getScene());
+    std::unique_ptr<RayTracer::Render::IRender> render = std::move(parser.getRender());
+
+    render->render(*scene);
     return 0;
 }
