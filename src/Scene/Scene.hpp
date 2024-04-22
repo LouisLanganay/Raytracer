@@ -10,9 +10,9 @@
 
 #include <vector>
 #include <memory>
-#include "IPrimitive.hpp"
-#include "ILight.hpp"
-#include "Camera.hpp"
+#include "../../libs/primitives/IPrimitive.hpp"
+#include "../../libs/lights/ILight.hpp"
+#include "../Camera/Camera.hpp"
 
 namespace RayTracer {
     class Scene {
@@ -26,7 +26,7 @@ namespace RayTracer {
 
             const std::vector<Primitives::IPrimitive *> &getPrimitives() const;
             const std::vector<Lights::ILight *> &getLights() const;
-            const Camera *getCamera() const;
+            Camera *getCamera() const;
 
             Vector3D traceRay(const Ray &ray) const;
 

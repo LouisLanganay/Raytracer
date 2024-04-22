@@ -43,7 +43,7 @@ namespace RayTracer {
         return _lights;
     }
 
-    const Camera *Scene::getCamera() const
+    Camera *Scene::getCamera() const
     {
         return _camera;
     }
