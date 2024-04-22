@@ -8,10 +8,10 @@
 #ifndef CAMERA_HPP_
 #define CAMERA_HPP_
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-#include "Rectangle3D.hpp"
-#include "Ray.hpp"
+#include "../Point/Point3D.hpp"
+#include "../Vector/Vector3D.hpp"
+#include "../Rectangle/Rectangle3D.hpp"
+#include "../Ray/Ray.hpp"
 #include <cmath>
 #define M_PI 3.14159265358979323846
 

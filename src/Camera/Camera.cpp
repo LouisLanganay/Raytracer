@@ -6,6 +6,7 @@
 */
 
 #include "Camera.hpp"
+#include <iostream>
 
 namespace RayTracer {
     Camera::Camera(
@@ -15,7 +16,7 @@ namespace RayTracer {
         _resolution(resolution)
     {
         _screen = Rectangle3D(
-            Point3D(_origin._x, _origin._y, 200),
+            Point3D(_origin._x - resolution._x / 2, _origin._y - resolution._y / 2, 0),
             Vector3D(resolution._x, 0, 0),
             Vector3D(0, resolution._y, 0)
         );
@@ -63,9 +64,7 @@ namespace RayTracer {
 
     Ray Camera::generateRay(double u, double v) const
     {
-        Point3D screenPoint = _screen.pointAt(u, v);
-        Vector3D direction = (screenPoint - _origin).getNormalized();
-
+        Vector3D direction = (_screen.pointAt(u, v) - _origin);
         return Ray(_origin, direction);
     }
 }
