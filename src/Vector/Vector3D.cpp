@@ -24,7 +24,7 @@ Vector3D::Vector3D(
 
 double Vector3D::length() const
 {
-    return sqrt(_x * _x + _y * _y + _z * _z);
+    return std::sqrt(dot(*this));
 }
 
 double Vector3D::dot(const Vector3D& other) const
@@ -91,7 +91,11 @@ void Vector3D::normalize()
 
 Vector3D Vector3D::getNormalized() const
 {
-    return *this / length();
+    double magnitude = sqrt(_x * _x + _y * _y + _z * _z);
+    if (magnitude != 0.0) {
+        return Vector3D(_x / magnitude, _y / magnitude, _z / magnitude);
+    }
+    return Vector3D();
 }
 
 Vector3D& Vector3D::operator=(const Vector3D& other)
