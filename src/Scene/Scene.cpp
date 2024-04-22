@@ -47,27 +47,4 @@ namespace RayTracer {
     {
         return _camera;
     }
-
-    Vector3D Scene::traceRay(const Ray &ray) const
-    {
-        Vector3D color(0, 0, 0);
-        for (const auto &primitive : _primitives) {
-            bool hit = primitive->hit(ray);
-            if (hit) {
-                color._x = primitive->getColor()._x;
-                color._y = primitive->getColor()._y;
-                color._z = primitive->getColor()._z;
-            }
-        }
-        return color;
-    }
-
-    void Scene::setPixel(int x, int y, Vector3D &color)
-    {
-        int ir = static_cast<int>(color._x);
-        int ig = static_cast<int>(color._y);
-        int ib = static_cast<int>(color._z);
-
-        std::cout << ir << " " << ig << " " << ib << std::endl;
-    }
 }

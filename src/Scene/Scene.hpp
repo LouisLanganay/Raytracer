@@ -28,10 +28,6 @@ namespace RayTracer {
             const std::vector<Lights::ILight *> &getLights() const;
             Camera *getCamera() const;
 
-            Vector3D traceRay(const Ray &ray) const;
-
-            void setPixel(int x, int y, Vector3D &color);
-
         protected:
         private:
             std::vector<Primitives::IPrimitive *> _primitives;
