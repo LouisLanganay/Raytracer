@@ -28,6 +28,9 @@ namespace RayTracer {
                     case RayTracer::PluginType::PRIMITIVE:
                         loadPlugin(_primitiveFactory, entry.path());
                         break;
+                    case RayTracer::PluginType::RENDER:
+                        loadPlugin(_renderFactory, entry.path());
+                        break;
                     default:
                         break;
                 }
@@ -43,5 +46,10 @@ namespace RayTracer {
     Factory<RayTracer::Primitives::IPrimitive> &LibLoader::getPrimitiveFactory()
     {
         return _primitiveFactory;
+    }
+
+    Factory<RayTracer::Render::IRender> &LibLoader::getRenderFactory()
+    {
+        return _renderFactory;
     }
 }
