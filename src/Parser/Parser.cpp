@@ -39,6 +39,7 @@ namespace RayTracer {
         parseCamera(root["camera"]);
         parseLights(root["lights"]);
         parsePrimitives(root["primitives"]);
+        parseRender(root["render"]);
     }
 
     double Parser::parseDouble(const libconfig::Setting &setting)
@@ -200,5 +201,19 @@ namespace RayTracer {
     std::unique_ptr<Scene> &Parser::getScene()
     {
         return _scene;
+    }
+
+    void Parser::parseRender(const libconfig::Setting &setting)
+    {
+        if (!setting.isGroup())
+            throw ParserException("Rendering must be a group");
+        std::unique_ptr<Render::IRender> render = _libLoader.getRenderFactory().create(setting["type"]);
+        render->setFilename(setting["filename"]);
+        _render = std::move(render);
+    }
+
+    std::unique_ptr<RayTracer::Render::IRender> Parser::getRender()
+    {
+        return std::move(_render);
     }
 }
