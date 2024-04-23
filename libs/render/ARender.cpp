@@ -12,6 +12,7 @@
 namespace RayTracer::Render {
     ARender::ARender()
     {
+        _light = new RayTracer::Lights::DirectionalLight();
         _light->setPosition(5.0, -10.0, -5.0);
         _light->setColor(1.0, 1.0, 1.0);
     }

@@ -11,6 +11,7 @@
 #include "IRender.hpp"
 #include "../../src/Camera/Camera.hpp"
 #include "../lights/DirectionalLight/DirectionalLight.hpp"
+#include "../lights/ALight.hpp"
 #include <memory>
 
 namespace RayTracer::Render {
