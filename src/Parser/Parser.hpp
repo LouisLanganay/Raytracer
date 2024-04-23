@@ -25,8 +25,11 @@ namespace RayTracer {
             void parseLight(const libconfig::Setting& setting);
             void parsePrimitives(const libconfig::Setting& setting);
             void parsePrimitive(const libconfig::Setting& setting);
+            void parseRender(const libconfig::Setting& setting);
 
             std::unique_ptr<Scene> &getScene();
+
+            std::unique_ptr<RayTracer::Render::IRender> getRender();
 
         protected:
         private:
@@ -34,6 +37,7 @@ namespace RayTracer {
             LibLoader &_libLoader;
             std::unique_ptr<Scene> _scene;
             libconfig::Config cfg;
+            std::unique_ptr<RayTracer::Render::IRender> _render;
 
             double parseDouble(const libconfig::Setting& setting);
     };

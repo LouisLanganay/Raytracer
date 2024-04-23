@@ -23,6 +23,8 @@ class Ray {
         Ray& operator=(const Ray& other);
         Ray& operator=(Ray&& other);
 
+        Point3D getPointAt(double distance) const;
+
         Point3D _origin;
         Vector3D _direction;
     protected:

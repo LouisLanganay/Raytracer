@@ -7,21 +7,28 @@
 
 include ../../../Makefile_colors.mk
 
-LIB 		= lib_sphere.so
+LIB 		= lib_render_ppm.so
 
 VPATH 		:= ./src
 VPATH 		+= ../
+VPATH 		+= ../../../src/Scene
 VPATH 		+= ../../../src/Point
+VPATH 		+= ../../../src/Camera
+VPATH 		+= ../../../src/Rectangle
 VPATH 		+= ../../../src/Vector
 VPATH 		+= ../../../src/Ray
 
+
 vpath %.cpp $(VPATH)
 
-SRC 		:= Sphere.cpp
-SRC 		+= APrimitive.cpp
-SRC 		+= Point3D.cpp
-SRC 		+= Vector3D.cpp
-SRC 		+= Ray.cpp
+SRC 		:= PPMRender.cpp
+SRC			+= ARender.cpp
+SRC			+= Scene.cpp
+SRC			+= Point3D.cpp
+SRC			+= Camera.cpp
+SRC			+= Rectangle3D.cpp
+SRC			+= Vector3D.cpp
+SRC			+= Ray.cpp
 
 CFLAGS 		= -Wall
 

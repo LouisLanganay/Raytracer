@@ -36,7 +36,7 @@ namespace RayTracer::Primitives {
             double getReflection() const override;
             RayTracer::Primitives::Axis getAxis() const override;
 
-            virtual bool hit(const Ray& ray) const = 0;
+            virtual bool hit(const Ray& ray, RayHit& hit) const = 0;
 
         protected:
             std::string _type;

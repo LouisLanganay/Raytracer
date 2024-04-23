@@ -11,12 +11,14 @@
 #include "../Factory/Factory.hpp"
 #include "../../libs/lights/ILight.hpp"
 #include "../../libs/primitives/IPrimitive.hpp"
+#include "../../libs/render/IRender.hpp"
 
 namespace RayTracer {
     enum class PluginType {
         LIGHT,
         MATERIAL,
-        PRIMITIVE
+        PRIMITIVE,
+        RENDER
     };
 
     class LibLoader {
@@ -28,6 +30,7 @@ namespace RayTracer {
 
             Factory<RayTracer::Lights::ILight> &getLightFactory();
             Factory<RayTracer::Primitives::IPrimitive> &getPrimitiveFactory();
+            Factory<RayTracer::Render::IRender> &getRenderFactory();
 
 
             template<typename T>
@@ -44,6 +47,7 @@ namespace RayTracer {
         private:
             Factory<RayTracer::Lights::ILight> _lightFactory;
             Factory<RayTracer::Primitives::IPrimitive> _primitiveFactory;
+            Factory<RayTracer::Render::IRender> _renderFactory;
     };
 }
 

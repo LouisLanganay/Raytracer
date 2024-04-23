@@ -19,7 +19,7 @@ VPATH 		+= ./src/Scene
 VPATH 		+= ./src/Camera
 VPATH 		+= ./src/Point
 VPATH 		+= ./src/Ray
-VPATH 		+= ./src/Render
+VPATH 		+= ./src/Rectangle
 
 vpath %.cpp $(VPATH)
 
@@ -31,8 +31,7 @@ SRC 		+= Camera.cpp
 SRC 		+= Point3D.cpp
 SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
-SRC 		+= Render.cpp
-
+SRC 		+= Rectangle3D.cpp
 
 BUILD_DIR 	= build
 OBJ 		:= $(SRC:%.c=$(BUILD_DIR)/%.o)
@@ -74,6 +73,7 @@ $(NAME): $(OBJ)
 plugins:
 	@ make -s -C ./libs/lights/AmbienteLight
 	@ make -s -C ./libs/primitives/Sphere
+	@ make -s -C ./libs/render/PPM
 
 debug: CFLAGS += -g
 
@@ -86,6 +86,7 @@ clean:
 	@ $(RM)	$(OBJ)
 	@ make clean -s -C ./libs/lights/AmbienteLight
 	@ make clean -s -C ./libs/primitives/Sphere
+	@ make clean -s -C ./libs/render/PPM
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcov${_END}"
@@ -94,6 +95,7 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbienteLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 
 fclean: clean
 	@ $(RM) -r $(BUILD_DIR)
@@ -102,12 +104,14 @@ fclean: clean
 	@ $(RM) -r doc
 	@ make fclean -s -C ./libs/lights/AmbienteLight
 	@ make fclean -s -C ./libs/primitives/Sphere
+	@ make fclean -s -C ./libs/render/PPM
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    doc${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbienteLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 
 re: fclean all
 

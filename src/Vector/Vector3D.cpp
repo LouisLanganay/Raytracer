@@ -24,7 +24,7 @@ Vector3D::Vector3D(
 
 double Vector3D::length() const
 {
-    return sqrt(_x * _x + _y * _y + _z * _z);
+    return std::sqrt(dot(*this));
 }
 
 double Vector3D::dot(const Vector3D& other) const
@@ -86,11 +86,48 @@ Vector3D& Vector3D::operator/=(double scalar)
 
 void Vector3D::normalize()
 {
-    double len = length();
+    *this /= length();
+}
 
-    if (len != 0) {
-        _x /= len;
-        _y /= len;
-        _z /= len;
+Vector3D Vector3D::getNormalized() const
+{
+    double magnitude = sqrt(_x * _x + _y * _y + _z * _z);
+    if (magnitude != 0.0) {
+        return Vector3D(_x / magnitude, _y / magnitude, _z / magnitude);
     }
+    return Vector3D();
+}
+
+Vector3D& Vector3D::operator=(const Vector3D& other)
+{
+    _x = other._x;
+    _y = other._y;
+    _z = other._z;
+    return *this;
+}
+
+Vector3D& Vector3D::operator=(Vector3D&& other)
+{
+    _x = other._x;
+    _y = other._y;
+    _z = other._z;
+    return *this;
+}
+
+Vector3D Vector3D::cross(const Vector3D& other) const
+{
+    return {
+        _y * other._z - _z * other._y,
+        _z * other._x - _x * other._z,
+        _x * other._y - _y * other._x
+    };
+}
+
+double Vector3D::lengthSquared() const
+{
+    double length = 0;
+    length += _x * _x;
+    length += _y * _y;
+    length += _z * _z;
+    return length;
 }

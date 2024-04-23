@@ -42,3 +42,8 @@ Ray& Ray::operator=(Ray&& other)
     _direction = other._direction;
     return *this;
 }
+
+Point3D Ray::getPointAt(double distance) const
+{
+    return _origin + _direction * distance;
+}
