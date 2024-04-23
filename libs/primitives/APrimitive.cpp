@@ -13,12 +13,12 @@ namespace RayTracer::Primitives {
         _type = type;
     }
 
-    void APrimitive::setOrigin(int x, int y, int z)
+    void APrimitive::setOrigin(double x, double y, double z)
     {
         _origin = Point3D(x, y, z);
     }
 
-    void APrimitive::setRotation(int x, int y, int z)
+    void APrimitive::setRotation(double x, double y, double z)
     {
         _rotation = Point3D(x, y, z);
     }
@@ -66,5 +66,25 @@ namespace RayTracer::Primitives {
     void APrimitive::setMaterial(const std::shared_ptr<RayTracer::Materials::IMaterial> &material)
     {
         _material = material;
+    }
+
+    double APrimitive::getHeight() const
+    {
+        return _height;
+    }
+
+    double APrimitive::getWidth() const
+    {
+        return _width;
+    }
+
+    void APrimitive::setHeight(double height)
+    {
+        _height = height;
+    }
+
+    void APrimitive::setWidth(double width)
+    {
+        _width = width;
     }
 }

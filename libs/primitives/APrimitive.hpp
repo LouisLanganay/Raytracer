@@ -19,11 +19,13 @@ namespace RayTracer::Primitives {
             virtual ~APrimitive() = default;
 
             void setType(const std::string &type) override;
-            void setOrigin(int x, int y, int z) override;
-            void setRotation(int x, int y, int z) override;
+            void setOrigin(double x, double y, double z) override;
+            void setRotation(double x, double y, double z) override;
             void setRadius(double radius) override;
             void setAxis(RayTracer::Primitives::Axis axis) override;
             void setMaterial(const std::shared_ptr<RayTracer::Materials::IMaterial> &material) override;
+            void setHeight(double height) override;
+            void setWidth(double width) override;
 
             std::string getType() const override;
             Point3D getOrigin() const override;
@@ -31,6 +33,8 @@ namespace RayTracer::Primitives {
             double getRadius() const override;
             RayTracer::Primitives::Axis getAxis() const override;
             std::shared_ptr<RayTracer::Materials::IMaterial> getMaterial() const override;
+            double getHeight() const override;
+            double getWidth() const override;
 
             virtual bool hit(const Ray& ray, RayHit& hit) const = 0;
 
@@ -41,6 +45,8 @@ namespace RayTracer::Primitives {
             double _radius;
             Axis _axis;
             std::shared_ptr<RayTracer::Materials::IMaterial> _material;
+            double _height;
+            double _width;
         private:
     };
 }

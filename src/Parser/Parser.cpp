@@ -159,6 +159,7 @@ namespace RayTracer {
     {
         if (!setting.isGroup())
             throw ParserException("Primitive must be a group");
+        std::string type = setting["type"];
         std::unique_ptr<Primitives::IPrimitive> primitive = _libLoader.getPrimitiveFactory().create(setting["type"]);
         if (!primitive)
             throw ParserException("Primitive type not found");
@@ -178,8 +179,20 @@ namespace RayTracer {
             parseDouble(setting["position"]["y"]),
             parseDouble(setting["position"]["z"])
         );
-        if (setting.exists("radius"))
+        if (type == "sphere") {
+            if (!setting.exists("radius") || !setting.lookup("radius").isNumber())
+                throw ParserException("Sphere must have a radius");
+            else
+                primitive->setRadius(parseDouble(setting["radius"]));
+        }
+        if (type == "cylinder" || type == "cone") {
+            if (!setting.exists("width") || !setting.lookup("width").isNumber())
+                throw ParserException("Cylinder must have a width");
+            if (!setting.exists("height") || !setting.lookup("height").isNumber())
+                throw ParserException("Cylinder must have a height");
             primitive->setRadius(parseDouble(setting["radius"]));
+            primitive->setHeight(parseDouble(setting["height"]));
+        }
         if (setting.exists("axis")) {
             std::string arg = setting["axis"];
             if (arg == "Z")
