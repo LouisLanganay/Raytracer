@@ -33,7 +33,7 @@ int main(int ac, char **av)
         RayTracer::Parser parser(av[1], libLoader);
         parser.parse();
         std::unique_ptr<RayTracer::Scene> scene = std::move(parser.getScene());
-        std::unique_ptr<RayTracer::Render::IRender> render = std::move(parser.getRender());
+        std::unique_ptr<RayTracer::Render::IRender> render = parser.getRender();
         render->render(*scene);
         return 0;
     } catch (const std::exception &e) {
