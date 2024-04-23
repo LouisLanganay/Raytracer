@@ -12,6 +12,8 @@
 namespace RayTracer::Render {
     ARender::ARender()
     {
+        _light->setPosition(5.0, -10.0, -5.0);
+        _light->setColor(1.0, 1.0, 1.0);
     }
 
     void ARender::setFilename(const std::string &filename)
@@ -56,6 +58,9 @@ namespace RayTracer::Render {
         Primitives::IPrimitive *closest = nullptr;
         RayHit tmp;
         RayHit rayHit;
+        double intensity = 0;
+        Point3D _color = Point3D(0, 0, 0);
+        bool validIllum = false;
 
         tmp.distance = std::numeric_limits<double>::max();
         rayHit.distance = std::numeric_limits<double>::max();
@@ -64,6 +69,9 @@ namespace RayTracer::Render {
                 continue;
             bool hit = primitive->hit(ray, tmp);
             if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < rayHit.distance)) {
+                if (_light) {
+                    validIllum = _light->computeLights(tmp.point, tmp.normal, _color, intensity, scene.getPrimitives(), primitive);
+                }
                 rayHit = tmp;
                 rayHit.primitive = primitive;
                 closest = primitive;
@@ -72,9 +80,18 @@ namespace RayTracer::Render {
         if (closest == nullptr)
             return Vector3D(0, 0, 0);
         Vector3D color;
-        color._x = rayHit.primitive->getColor()._x;
-        color._y = rayHit.primitive->getColor()._y;
-        color._z = rayHit.primitive->getColor()._z;
-        return color;
+        if (validIllum) {
+
+            color._x = _color._x * intensity;
+            color._y = _color._y * intensity;
+            color._z = _color._z * intensity;
+            return color;
+        } else {
+            return Vector3D(0, 0, 0);
+        }
+        // color._x = rayHit.primitive->getColor()._x;
+        // color._y = rayHit.primitive->getColor()._y;
+        // color._z = rayHit.primitive->getColor()._z;
+        // return color;
     }
 }

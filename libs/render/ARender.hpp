@@ -10,6 +10,7 @@
 
 #include "IRender.hpp"
 #include "../../src/Camera/Camera.hpp"
+#include "../lights/DirectionalLight/DirectionalLight.hpp"
 #include <memory>
 
 namespace RayTracer::Render {
@@ -34,6 +35,7 @@ namespace RayTracer::Render {
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
         private:
             std::string _message;
+            RayTracer::Lights::DirectionalLight *_light;
     };
 
 }
