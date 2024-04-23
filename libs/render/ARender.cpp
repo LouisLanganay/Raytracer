@@ -12,9 +12,6 @@
 namespace RayTracer::Render {
     ARender::ARender()
     {
-        _light = new RayTracer::Lights::DirectionalLight();
-        _light->setPosition(5.0, -10.0, -5.0);
-        _light->setColor(1.0, 1.0, 1.0);
     }
 
     void ARender::setFilename(const std::string &filename)
@@ -70,7 +67,7 @@ namespace RayTracer::Render {
                 continue;
             bool hit = primitive->hit(ray, tmp);
             if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < rayHit.distance)) {
-                if (_light) {
+                for (Lights::ILight *_light : scene.getLights()) {
                     validIllum = _light->computeLights(tmp.point, tmp.normal, _color, intensity, scene.getPrimitives(), primitive);
                 }
                 rayHit = tmp;
