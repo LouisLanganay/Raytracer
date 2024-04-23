@@ -40,4 +40,19 @@ namespace RayTracer::Lights
             return true;
         }
     }
+
+    extern "C" std::unique_ptr<ILight> getEntryPoint()
+    {
+        return std::make_unique<DirectionalLight>();
+    }
+
+    extern "C" std::unique_ptr<PluginType> getTypePoint()
+    {
+        return std::make_unique<PluginType>(PluginType::LIGHT);
+    }
+
+    extern "C" std::unique_ptr<std::string> getNamePoint()
+    {
+        return std::make_unique<std::string>("directional");
+    }
 }
