@@ -72,9 +72,9 @@ namespace RayTracer::Render {
         if (closest == nullptr)
             return Vector3D(0, 0, 0);
         Vector3D color;
-        color._x = rayHit.primitive->getColor()._x;
-        color._y = rayHit.primitive->getColor()._y;
-        color._z = rayHit.primitive->getColor()._z;
+        color._x = rayHit.primitive->getMaterial()->getColor()._x;
+        color._y = rayHit.primitive->getMaterial()->getColor()._y;
+        color._z = rayHit.primitive->getMaterial()->getColor()._z;
         return color;
     }
 }
