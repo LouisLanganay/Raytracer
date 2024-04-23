@@ -33,6 +33,9 @@ namespace RayTracer {
                         case RayTracer::PluginType::RENDER:
                             loadPlugin(_renderFactory, entry.path());
                             break;
+                        case RayTracer::PluginType::MATERIAL:
+                            loadPlugin(_materialFactory, entry.path());
+                            break;
                         default:
                             throw LoaderException("Unknown plugin type");
                             break;
@@ -57,5 +60,10 @@ namespace RayTracer {
     Factory<RayTracer::Render::IRender> &LibLoader::getRenderFactory()
     {
         return _renderFactory;
+    }
+
+    Factory<RayTracer::Materials::IMaterial> &LibLoader::getMaterialFactory()
+    {
+        return _materialFactory;
     }
 }

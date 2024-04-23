@@ -12,6 +12,7 @@
 #include "../../libs/lights/ILight.hpp"
 #include "../../libs/primitives/IPrimitive.hpp"
 #include "../../libs/render/IRender.hpp"
+#include "../../libs/materials/IMaterial.hpp"
 
 namespace RayTracer {
     enum class PluginType {
@@ -32,6 +33,7 @@ namespace RayTracer {
             Factory<RayTracer::Lights::ILight> &getLightFactory();
             Factory<RayTracer::Primitives::IPrimitive> &getPrimitiveFactory();
             Factory<RayTracer::Render::IRender> &getRenderFactory();
+            Factory<RayTracer::Materials::IMaterial> &getMaterialFactory();
 
 
             template<typename T>
@@ -49,6 +51,7 @@ namespace RayTracer {
             Factory<RayTracer::Lights::ILight> _lightFactory;
             Factory<RayTracer::Primitives::IPrimitive> _primitiveFactory;
             Factory<RayTracer::Render::IRender> _renderFactory;
+            Factory<RayTracer::Materials::IMaterial> _materialFactory;
     };
 }
 
