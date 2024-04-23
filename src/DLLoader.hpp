@@ -11,6 +11,7 @@
 #include <iostream>
 #include <dlfcn.h>
 #include <memory>
+#include "Exceptions.hpp"
 
 template <typename T>
 class DLLoader {
@@ -22,7 +23,7 @@ class DLLoader {
             _handle = dlopen(path.c_str(), RTLD_LAZY);
             if (!_handle) {
                 std::cerr << "Cannot open library: " << dlerror() << std::endl;
-                exit(84);
+                throw RayTracer::LoaderException("Cannot open library");
             }
         }
 
@@ -36,7 +37,7 @@ class DLLoader {
             _instance = reinterpret_cast<std::unique_ptr<T> (*)(void)>(dlsym(_handle, entryPoint.c_str()));
             if (!_instance) {
                 std::cerr << "Cannot load symbol: " << dlerror() << std::endl;
-                exit(84);
+                throw RayTracer::LoaderException("Cannot load symbol");
             }
         }
 
