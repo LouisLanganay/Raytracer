@@ -18,7 +18,8 @@ namespace RayTracer {
         LIGHT,
         MATERIAL,
         PRIMITIVE,
-        RENDER
+        RENDER,
+        UNDEFINED
     };
 
     class LibLoader {
