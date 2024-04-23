@@ -22,6 +22,16 @@ namespace RayTracer {
             std::string _message;
     };
 
+    class MainException : public Exception {
+        public:
+            MainException(const std::string &message) : Exception(message) {}
+    };
+
+    class LoaderException : public Exception {
+        public:
+            LoaderException(const std::string &message) : Exception(message) {}
+    };
+
     class ParserException : public Exception {
         public:
             ParserException(const std::string &message) : Exception(message) {}
