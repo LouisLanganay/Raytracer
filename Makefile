@@ -71,7 +71,7 @@ $(NAME): $(OBJ)
 	$(_U_WHITE)$(shell echo "$?" | wc -w) file(s) compiled${_END}."
 
 plugins:
-	@ make -s -C ./libs/lights/AmbienteLight
+	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
 	@ make -s -C ./libs/render/PPM
 
@@ -84,7 +84,7 @@ clean:
 	@ $(RM) vgcore.*
 	@ $(RM) coding-style-reports.log
 	@ $(RM)	$(OBJ)
-	@ make clean -s -C ./libs/lights/AmbienteLight
+	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ make clean -s -C ./libs/render/PPM
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
@@ -94,7 +94,7 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    coding-style-reports.log${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbienteLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 
 fclean: clean
@@ -102,14 +102,14 @@ fclean: clean
 	@ $(RM)	$(NAME)
 	@ $(RM)	$(NAME)_tests
 	@ $(RM) -r doc
-	@ make fclean -s -C ./libs/lights/AmbienteLight
+	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
 	@ make fclean -s -C ./libs/render/PPM
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    doc${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbienteLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 
