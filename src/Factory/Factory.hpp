@@ -25,6 +25,8 @@ namespace RayTracer {
                 if(_plugins.find(type) == _plugins.end())
                     return nullptr;
                 DLLoader<T> *loader = _plugins[type].get();
+                if (loader == nullptr)
+                    return throw std::runtime_error("Loader is null"), nullptr;
                 return loader->getInstance();
             }
 
