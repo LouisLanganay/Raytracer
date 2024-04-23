@@ -71,7 +71,7 @@ $(NAME): $(OBJ)
 	$(_U_WHITE)$(shell echo "$?" | wc -w) file(s) compiled${_END}."
 
 plugins:
-	@ make -s -C ./libs/lights/AmbientLight
+	@ make -s -C ./libs/lights/DirectionalLight
 	@ make -s -C ./libs/primitives/Sphere
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/materials/Flat
@@ -85,7 +85,7 @@ clean:
 	@ $(RM) vgcore.*
 	@ $(RM) coding-style-reports.log
 	@ $(RM)	$(OBJ)
-	@ make clean -s -C ./libs/lights/AmbientLight
+	@ make clean -s -C ./libs/lights/DirectionalLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/materials/Flat
@@ -96,7 +96,7 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    coding-style-reports.log${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbientLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/DirectionalLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Flat${_END}"
 
@@ -105,7 +105,7 @@ fclean: clean
 	@ $(RM)	$(NAME)
 	@ $(RM)	$(NAME)_tests
 	@ $(RM) -r doc
-	@ make fclean -s -C ./libs/lights/AmbientLight
+	@ make fclean -s -C ./libs/lights/DirectionalLight
 	@ make fclean -s -C ./libs/primitives/Sphere
 	@ make fclean -s -C ./libs/render/PPM
 	@ make fclean -s -C ./libs/materials/Flat
@@ -113,7 +113,7 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    doc${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/DirectionalLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"
