@@ -26,6 +26,8 @@ namespace RayTracer {
             void parsePrimitives(const libconfig::Setting& setting);
             void parsePrimitive(const libconfig::Setting& setting);
             void parseRender(const libconfig::Setting& setting);
+            void parseMaterials(const libconfig::Setting& setting);
+            void parseMaterial(const libconfig::Setting& setting);
 
             std::unique_ptr<Scene> &getScene();
 
@@ -38,6 +40,7 @@ namespace RayTracer {
             std::unique_ptr<Scene> _scene;
             libconfig::Config cfg;
             std::unique_ptr<RayTracer::Render::IRender> _render;
+            std::map<std::string, std::shared_ptr<RayTracer::Materials::IMaterial>> _materials;
 
             double parseDouble(const libconfig::Setting& setting);
     };
