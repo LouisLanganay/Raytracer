@@ -27,23 +27,31 @@ namespace RayTracer {
         try {
             cfg.readFile(_filename);
         } catch (const libconfig::FileIOException &fioex) {
-            std::cerr << "I/O error while reading file." << std::endl;
-            exit(84);
+            throw ParserException("I/O error while reading file.");
         } catch (const libconfig::ParseException &pex) {
-            std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                    << " - " << pex.getError() << std::endl;
-            exit(84);
+            throw ParserException("Parse error at line " + std::to_string(pex.getLine()));
         }
-        _scene = std::make_unique<Scene>();
-        const libconfig::Setting &root = cfg.getRoot();
-        parseCamera(root["camera"]);
-        parseLights(root["lights"]);
-        parsePrimitives(root["primitives"]);
-        parseRender(root["render"]);
+        try {
+            _scene = std::make_unique<Scene>();
+            const libconfig::Setting &root = cfg.getRoot();
+            parseCamera(root["camera"]);
+            parseRender(root["render"]);
+            parseLights(root["lights"]);
+            parseMaterials(root["materials"]);
+            parsePrimitives(root["primitives"]);
+        } catch (const libconfig::SettingNotFoundException &e) {
+            throw ParserException("Setting not found");
+        } catch (const libconfig::SettingTypeException &e) {
+            throw ParserException("Setting type error");
+        } catch (const std::exception &e) {
+            throw ParserException(e.what());
+        }
     }
 
     double Parser::parseDouble(const libconfig::Setting &setting)
     {
+        if (!setting.isNumber())
+            throw ParserException("Setting must be a number");
         int value = setting;
         return static_cast<double>(value);
     }
@@ -81,21 +89,12 @@ namespace RayTracer {
                 0
             )
         );
-        //camera->setOrigin(
-        //    parseDouble(setting["position"]["x"]),
-        //    parseDouble(setting["position"]["y"]),
-        //    parseDouble(setting["position"]["z"])
-        //);
-        //camera->setFov(parseDouble(setting["fieldOfView"]));
-        //camera->setResolution(
-        //    parseDouble(setting["resolution"]["x"]),
-        //    parseDouble(setting["resolution"]["y"])
-        //);
-        //camera->setRotation(
-        //    parseDouble(setting["rotation"]["x"]),
-        //    parseDouble(setting["rotation"]["y"]),
-        //    parseDouble(setting["rotation"]["z"])
-        //);
+        camera->setFov(parseDouble(setting["fieldOfView"]));
+        camera->setRotation(
+            parseDouble(setting["rotation"]["x"]),
+            parseDouble(setting["rotation"]["y"]),
+            parseDouble(setting["rotation"]["z"])
+        );
         _scene->setCamera(camera);
     }
 
@@ -111,8 +110,11 @@ namespace RayTracer {
 
     void Parser::parseLight(const libconfig::Setting &setting)
     {
+        if (!setting.isGroup())
+            throw ParserException("Light must be a group");
         std::unique_ptr<Lights::ILight> light = _libLoader.getLightFactory().create(setting["type"]);
-
+        if (!light)
+            throw ParserException("Light type not found");
         if (!setting.isGroup())
             throw ParserException("Light must be a group");
         if (!setting.exists("type") || !setting.lookup("type").isString())
@@ -155,8 +157,9 @@ namespace RayTracer {
 
     void Parser::parsePrimitive(const libconfig::Setting &setting)
     {
+        if (!setting.isGroup())
+            throw ParserException("Primitive must be a group");
         std::unique_ptr<Primitives::IPrimitive> primitive = _libLoader.getPrimitiveFactory().create(setting["type"]);
-
         if (!primitive)
             throw ParserException("Primitive type not found");
         if (!setting.exists("position") || !setting.lookup("position").isGroup() ||
@@ -164,17 +167,10 @@ namespace RayTracer {
             !setting["position"].exists("z") || !setting["position"]["x"].isNumber() ||
             !setting["position"]["y"].isNumber() || !setting["position"]["z"].isNumber())
             throw ParserException("Primitive must have a position group");
-        if (!setting.exists("color") || !setting.lookup("color").isGroup() ||
-            !setting["color"].exists("r") || !setting["color"].exists("g") ||
-            !setting["color"].exists("b") || !setting["color"]["r"].isNumber() ||
-            !setting["color"]["g"].isNumber() || !setting["color"]["b"].isNumber())
-            throw ParserException("Primitive must have a color group");
-        if (!setting.exists("reflection") || !setting.lookup("reflection").isNumber())
-            throw ParserException("Primitive must have reflection");
-        if (!setting.exists("transparency") || !setting.lookup("transparency").isNumber())
-            throw ParserException("Primitive must have transparency");
         if (!setting.exists("type") || !setting.lookup("type").isString())
             throw ParserException("Primitive must have type");
+        if (!setting.exists("material") || !setting.lookup("material").isString())
+            throw ParserException("Primitive must have material");
 
         primitive->setType(setting["type"]);
         primitive->setOrigin(
@@ -182,19 +178,23 @@ namespace RayTracer {
             parseDouble(setting["position"]["y"]),
             parseDouble(setting["position"]["z"])
         );
-        primitive->setColor(
-            parseDouble(setting["color"]["r"]),
-            parseDouble(setting["color"]["g"]),
-            parseDouble(setting["color"]["b"])
-        );
-        primitive->setTransparency(parseDouble(setting["transparency"]));
-        primitive->setReflection(parseDouble(setting["reflection"]));
         if (setting.exists("radius"))
             primitive->setRadius(parseDouble(setting["radius"]));
-        //if (setting.exists("axis")) {
-        //    if (setting["axis"] == "Z")
-        //        primitive->setAxis(RayTracer::Primitives::Axis::Z);
-        //}
+        if (setting.exists("axis")) {
+            std::string arg = setting["axis"];
+            if (arg == "Z")
+                primitive->setAxis(RayTracer::Primitives::Axis::Z);
+            else if (arg == "Y")
+                primitive->setAxis(RayTracer::Primitives::Axis::Y);
+            else if (arg == "X")
+                primitive->setAxis(RayTracer::Primitives::Axis::X);
+            else
+                throw ParserException("Unknown axis");
+        }
+        std::shared_ptr<RayTracer::Materials::IMaterial> material = _materials[setting["material"]];
+        if (!material)
+            throw ParserException("Material not found");
+        primitive->setMaterial(material);
         _scene->addPrimitive(primitive);
     }
 
@@ -208,6 +208,10 @@ namespace RayTracer {
         if (!setting.isGroup())
             throw ParserException("Rendering must be a group");
         std::unique_ptr<Render::IRender> render = _libLoader.getRenderFactory().create(setting["type"]);
+        if (!render)
+            throw ParserException("Render type not found");
+        if (!setting.exists("filename") || !setting.lookup("filename").isString())
+            throw ParserException("Render must have a filename string");
         render->setFilename(setting["filename"]);
         _render = std::move(render);
     }
@@ -215,5 +219,39 @@ namespace RayTracer {
     std::unique_ptr<RayTracer::Render::IRender> Parser::getRender()
     {
         return std::move(_render);
+    }
+
+    void Parser::parseMaterials(const libconfig::Setting &setting)
+    {
+        if (!setting.isList())
+            throw ParserException("Materials must be a list");
+        std::size_t len = setting.getLength();
+        for (std::size_t i = 0; i < len; i++)
+            parseMaterial(setting[i]);
+    }
+
+    void Parser::parseMaterial(const libconfig::Setting &setting) {
+        if (!setting.isGroup())
+            throw ParserException("Material must be a group");
+        std::unique_ptr<Materials::IMaterial> material = _libLoader.getMaterialFactory().create(setting["type"]);
+        if (!material)
+            throw ParserException("Material type not found");
+        if (!setting.exists("type") || !setting.lookup("type").isString())
+            throw ParserException("Material must have a type string");
+        if (!setting.exists("name") || !setting.lookup("name").isString())
+            throw ParserException("Material must have a name string");
+        if (!setting.exists("color") || !setting.lookup("color").isGroup() ||
+            !setting["color"].exists("r") || !setting["color"].exists("g") ||
+            !setting["color"].exists("b") || !setting["color"]["r"].isNumber() ||
+            !setting["color"]["g"].isNumber() || !setting["color"]["b"].isNumber())
+            throw ParserException("Material must have a color group");
+
+        material->setName(setting["name"]);
+        material->setColor(
+                parseDouble(setting["color"]["r"]),
+                parseDouble(setting["color"]["g"]),
+                parseDouble(setting["color"]["b"])
+        );
+        _materials[setting["name"]] = std::move(material);
     }
 }
