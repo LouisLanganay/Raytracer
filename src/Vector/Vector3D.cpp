@@ -131,3 +131,20 @@ double Vector3D::lengthSquared() const
     length += _z * _z;
     return length;
 }
+
+Vector3D Vector3D::operator*(const Vector3D& other) const
+{
+    return Vector3D(_x * other._x, _y * other._y, _z * other._z);
+}
+
+void Vector3D::clamp(double min, double max)
+{
+    _x = std::min(std::max(_x, min), max);
+    _y = std::min(std::max(_y, min), max);
+    _z = std::min(std::max(_z, min), max);
+}
+
+Vector3D Vector3D::operator-() const
+{
+    return Vector3D(-_x, -_y, -_z);
+}

@@ -72,6 +72,7 @@ $(NAME): $(OBJ)
 
 plugins:
 	@ make -s -C ./libs/lights/DirectionalLight
+	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/materials/Flat
@@ -86,6 +87,7 @@ clean:
 	@ $(RM) coding-style-reports.log
 	@ $(RM)	$(OBJ)
 	@ make clean -s -C ./libs/lights/DirectionalLight
+	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/materials/Flat
@@ -106,6 +108,7 @@ fclean: clean
 	@ $(RM)	$(NAME)_tests
 	@ $(RM) -r doc
 	@ make fclean -s -C ./libs/lights/DirectionalLight
+	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
 	@ make fclean -s -C ./libs/render/PPM
 	@ make fclean -s -C ./libs/materials/Flat

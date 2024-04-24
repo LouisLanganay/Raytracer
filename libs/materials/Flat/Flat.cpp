@@ -18,6 +18,16 @@ namespace RayTracer::Materials {
     {
     }
 
+    bool Flat::scatter(const Ray &ray, const RayHit &hit, Scatter &scatter) const
+    {
+        return false;
+    }
+
+    Vector3D Flat::getColor(const Ray &ray, const RayHit &hit) const
+    {
+        return _color;
+    }
+
     extern "C" std::unique_ptr<IMaterial> getEntryPoint()
     {
         return std::make_unique<RayTracer::Materials::Flat>();

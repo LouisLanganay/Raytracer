@@ -58,4 +58,14 @@ namespace RayTracer::Lights {
     {
         return _intensity;
     }
+
+    Vector3D ALight::getDirection() const
+    {
+        return _direction;
+    }
+
+    void ALight::setDirection(double x, double y, double z)
+    {
+        _direction = Vector3D(x, y, z);
+    }
 }

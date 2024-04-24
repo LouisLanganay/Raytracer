@@ -37,6 +37,7 @@ namespace RayTracer::Render {
         private:
             std::string _message;
             RayTracer::Lights::DirectionalLight *_light;
+            Vector3D randomInUnitSphere();
     };
 
 }

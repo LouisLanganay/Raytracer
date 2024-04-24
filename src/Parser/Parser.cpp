@@ -119,11 +119,6 @@ namespace RayTracer {
             throw ParserException("Light must be a group");
         if (!setting.exists("type") || !setting.lookup("type").isString())
             throw ParserException("Light must have a type string");
-        if (!setting.exists("position") || !setting.lookup("position").isGroup() ||
-            !setting["position"].exists("x") || !setting["position"].exists("y") ||
-            !setting["position"].exists("z") || !setting["position"]["x"].isNumber() ||
-            !setting["position"]["y"].isNumber() || !setting["position"]["z"].isNumber())
-            throw ParserException("Light must have a position group");
         if (!setting.exists("color") || !setting.lookup("color").isGroup() ||
             !setting["color"].exists("r") || !setting["color"].exists("g") ||
             !setting["color"].exists("b") || !setting["color"]["r"].isNumber() ||
@@ -132,11 +127,18 @@ namespace RayTracer {
         if (!setting.exists("intensity") || !setting.lookup("intensity").isNumber())
             throw ParserException("Light must have an intensity number");
         light->setType(setting["type"]);
-        light->setOrigin(
-            parseDouble(setting["position"]["x"]),
-            parseDouble(setting["position"]["y"]),
-            parseDouble(setting["position"]["z"])
-        );
+        if (setting.exists("position"))
+            light->setOrigin(
+                parseDouble(setting["position"]["x"]),
+                parseDouble(setting["position"]["y"]),
+                parseDouble(setting["position"]["z"])
+            );
+        if (setting.exists("direction"))
+            light->setDirection(
+                parseDouble(setting["direction"]["x"]),
+                parseDouble(setting["direction"]["y"]),
+                parseDouble(setting["direction"]["z"])
+            );
         light->setColor(
             parseDouble(setting["color"]["r"]),
             parseDouble(setting["color"]["g"]),

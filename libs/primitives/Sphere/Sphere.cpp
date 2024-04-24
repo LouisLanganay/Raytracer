@@ -32,14 +32,14 @@ namespace RayTracer::Primitives {
             hit.point = ray.getPointAt(hit.distance);
             hit.normal = Vector3D(hit.point - _origin) / _radius;
         } else {
-            auto temp = (-b - sqrt(discriminant)) / a;
-            if (temp > 0) {
-                hit.distance = temp;
+            auto tmp = (-b - sqrt(discriminant)) / a;
+            if (tmp > 0) {
+                hit.distance = tmp;
                 hit.point = ray.getPointAt(hit.distance);
                 hit.normal = Vector3D(hit.point - _origin) / _radius;
             } else {
-                temp = (-b + sqrt(discriminant)) / a;
-                hit.distance = temp;
+                tmp = (-b + sqrt(discriminant)) / a;
+                hit.distance = tmp;
                 hit.point = ray.getPointAt(hit.distance);
                 hit.normal = Vector3D(hit.point - _origin) / _radius;
             }

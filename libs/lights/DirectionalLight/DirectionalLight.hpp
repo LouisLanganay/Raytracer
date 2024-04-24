@@ -18,11 +18,12 @@ namespace RayTracer::Lights {
             DirectionalLight();
             ~DirectionalLight() = default;
 
-            bool computeLights(const Point3D &point,
-                                const Vector3D &normal,
-                                Vector3D &color,
-                                double &intensity,
-                                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives) override;
+            Vector3D computeLights(
+                Vector3D color,
+                const Ray &ray,
+                const RayHit &hit,
+                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+            ) const override;
         protected:
         private:
     };

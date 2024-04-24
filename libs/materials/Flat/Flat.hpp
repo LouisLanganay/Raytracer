@@ -16,6 +16,8 @@ namespace RayTracer::Materials {
             Flat();
             ~Flat();
 
+            bool scatter(const Ray &ray, const RayHit &hit, Scatter &scatter) const override;
+            Vector3D getColor(const Ray &ray, const RayHit &hit) const override;
         protected:
         private:
     };

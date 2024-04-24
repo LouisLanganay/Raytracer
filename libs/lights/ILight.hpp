@@ -24,18 +24,21 @@ namespace RayTracer::Lights {
             virtual void setColor(double x, double y, double z) = 0;
             virtual void setIntensity(double intensity) = 0;
             virtual void setPosition(double x, double y, double z) = 0;
+            virtual void setDirection(double x, double y, double z) = 0;
 
             virtual std::string getType() const = 0;
             virtual Point3D getOrigin() const = 0;
             virtual Vector3D getColor() const = 0;
             virtual Point3D getPosition() const = 0;
             virtual double getIntensity() const = 0;
+            virtual Vector3D getDirection() const = 0;
 
-            virtual bool computeLights(const Point3D &point,
-                                        const Vector3D &normal,
-                                        Vector3D &color,
-                                        double &intensity,
-                                        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives) = 0;
+            virtual Vector3D computeLights(
+                Vector3D color,
+                const Ray &ray,
+                const RayHit &hit,
+                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+            ) const = 0;
         protected:
         private:
     };

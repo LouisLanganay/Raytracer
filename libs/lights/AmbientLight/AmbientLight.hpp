@@ -14,7 +14,13 @@ namespace RayTracer::Lights {
     class AmbientLight : public ALight {
         public:
             AmbientLight();
-            ~AmbientLight();
+
+            Vector3D computeLights(
+                Vector3D color,
+                const Ray &ray,
+                const RayHit &hit,
+                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+            ) const override;
 
         protected:
         private:
