@@ -56,8 +56,8 @@ namespace RayTracer::Render {
         Primitives::IPrimitive *closest = nullptr;
         RayHit tmp;
         RayHit rayHit;
-        double intensity = 0;
-        Point3D _color = Point3D(0, 0, 0);
+        double intensity;
+        Vector3D color = Vector3D(0, 0, 0);
         bool validIllum = false;
 
         tmp.distance = std::numeric_limits<double>::max();
@@ -65,31 +65,22 @@ namespace RayTracer::Render {
         for (Primitives::IPrimitive *primitive : scene.getPrimitives()) {
             if (primitive == lastPrimitive)
                 continue;
+            color = primitive->getMaterial().get()->getColor();
             bool hit = primitive->hit(ray, tmp);
             if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < rayHit.distance)) {
-                for (Lights::ILight *_light : scene.getLights()) {
-                    validIllum = _light->computeLights(tmp.point, tmp.normal, _color, intensity, scene.getPrimitives(), primitive);
-                }
                 rayHit = tmp;
                 rayHit.primitive = primitive;
                 closest = primitive;
+                for (Lights::ILight *_light : scene.getLights()) {
+                    validIllum = _light->computeLights(tmp.point, tmp.normal, color, intensity, scene.getPrimitives());
+                }
+            if (validIllum) {
+                return color;
+            }
             }
         }
         if (closest == nullptr)
             return Vector3D(0, 0, 0);
-        Vector3D color;
-        if (validIllum) {
-
-            color._x = _color._x * intensity;
-            color._y = _color._y * intensity;
-            color._z = _color._z * intensity;
-            return color;
-        } else {
-            return Vector3D(0, 0, 0);
-        }
-        // color._x = rayHit.primitive->getColor()._x;
-        // color._y = rayHit.primitive->getColor()._y;
-        // color._z = rayHit.primitive->getColor()._z;
-        // return color;
+        return color;
     }
 }

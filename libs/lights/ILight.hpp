@@ -27,16 +27,15 @@ namespace RayTracer::Lights {
 
             virtual std::string getType() const = 0;
             virtual Point3D getOrigin() const = 0;
-            virtual Point3D getColor() const = 0;
+            virtual Vector3D getColor() const = 0;
             virtual Point3D getPosition() const = 0;
             virtual double getIntensity() const = 0;
 
             virtual bool computeLights(const Point3D &point,
                                         const Vector3D &normal,
-                                        Point3D &color,
+                                        Vector3D &color,
                                         double &intensity,
-                                        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives,
-                                        Primitives::IPrimitive *currentPrimitive) = 0;
+                                        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives) = 0;
         protected:
         private:
     };

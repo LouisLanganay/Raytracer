@@ -20,10 +20,9 @@ namespace RayTracer::Lights {
 
             bool computeLights(const Point3D &point,
                                 const Vector3D &normal,
-                                Point3D &color,
+                                Vector3D &color,
                                 double &intensity,
-                                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives,
-                                Primitives::IPrimitive *currentPrimitive) override;
+                                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives) override;
         protected:
         private:
     };

@@ -16,7 +16,7 @@ namespace RayTracer::Lights {
 
     void ALight::setColor(double x, double y, double z)
     {
-        _color = Point3D(x, y, z);
+        _color = Vector3D(x, y, z);
     }
 
     void ALight::setType(const std::string &type)
@@ -39,7 +39,7 @@ namespace RayTracer::Lights {
         return _origin;
     }
 
-    Point3D ALight::getColor() const
+    Vector3D ALight::getColor() const
     {
         return _color;
     }
@@ -57,15 +57,5 @@ namespace RayTracer::Lights {
     double ALight::getIntensity() const
     {
         return _intensity;
-    }
-
-    bool ALight::computeLights(const Point3D &point,
-        const Vector3D &normal,
-        Point3D &color,
-        double &intensity,
-        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives,
-        Primitives::IPrimitive *currentPrimitive)
-    {
-        return false;
     }
 }

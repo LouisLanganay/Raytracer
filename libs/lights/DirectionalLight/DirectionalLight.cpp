@@ -13,30 +13,26 @@ namespace RayTracer::Lights
 {
     DirectionalLight::DirectionalLight()
     {
-        _type = getType();
-        _color = getColor();
-        _intensity = getIntensity();
     }
 
     bool DirectionalLight::computeLights(const Point3D &point,
         const Vector3D &normal,
-        Point3D &color,
+        Vector3D &color,
         double &intensity,
-        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives,
-        Primitives::IPrimitive *currentPrimitive)
+        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives)
     {
-        Vector3D lightDir = _origin - point;
+        Vector3D lightDir = getOrigin() - point;
         lightDir.normalize();
         Point3D startPoint = point;
         double angle = acos(lightDir.dot(normal));
 
-        if (angle > M_PI / 2.0) {
-            color = _color;
+        if (angle > (M_PI / 2.0)) {
+            color += _color;
             intensity = 0.0;
             return false;
         } else {
-            color = _color;
-            intensity = _intensity * (1.0 - angle / (M_PI / 2.0));
+            intensity = _intensity * (1.0 - (angle / (M_PI / 2.0)));
+            color += _color * intensity;
             return true;
         }
     }
