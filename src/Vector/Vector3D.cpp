@@ -125,11 +125,7 @@ Vector3D Vector3D::cross(const Vector3D& other) const
 
 double Vector3D::lengthSquared() const
 {
-    double length = 0;
-    length += _x * _x;
-    length += _y * _y;
-    length += _z * _z;
-    return length;
+    return dot(*this);
 }
 
 Vector3D Vector3D::operator*(const Vector3D& other) const

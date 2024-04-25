@@ -15,10 +15,10 @@ namespace RayTracer::Lights
     }
 
     Vector3D DirectionalLight::computeLights(
-            Vector3D color,
-            const Ray &ray,
-            const RayHit &hit,
-            const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+        Vector3D color,
+        const Ray &ray,
+        const RayHit &hit,
+        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
         static constexpr double kShadowBias = 1e-5;
@@ -26,34 +26,18 @@ namespace RayTracer::Lights
         lightDirection._x = -_direction._x;
         lightDirection._y = -_direction._y;
         lightDirection._z = -_direction._z;
-        Vector3D surfaceNormal = hit.normal.getNormalized();
-        Vector3D toLight = lightDirection.getNormalized();
-        Ray shadowRay(hit.point + surfaceNormal * kShadowBias, toLight);
+        lightDirection.normalize();
+        double angle = hit.normal.dot(lightDirection);
+
         double shadowIntensity = 1.0;
-        for (const auto &primitive : primitives) {
-            RayHit shadowHit;
-            if (primitive == hit.primitive)
-                continue;
-            if (primitive->hit(shadowRay, shadowHit)) {
-                shadowIntensity = 0.0;
-                break;
-            }
-        }
 
-        double diffuseFactor = std::max(0.0, surfaceNormal.dot(toLight));
-        Vector3D diffuseColor = color * (_intensity * 0.01) * diffuseFactor * shadowIntensity;
+        Vector3D newColor = color * _color * (_intensity * 0.01);
+        newColor.clamp(0, 255);
 
-        Vector3D viewDirection;
-        viewDirection._x = -ray._direction.getNormalized()._x;
-        viewDirection._y = -ray._direction.getNormalized()._y;
-        viewDirection._z = -ray._direction.getNormalized()._z;
-        Vector3D halfVector = (toLight + viewDirection).getNormalized();
-        double specularFactor = std::pow(std::max(0.0, surfaceNormal.dot(halfVector)), 100);
-        Vector3D specularColor = _color * specularFactor * shadowIntensity;
+        double diffuseIntensity = std::max(0.0, angle) * shadowIntensity;
+        Vector3D diffuseColor = newColor * diffuseIntensity;
 
-        Vector3D illuminationColor = diffuseColor + specularColor;
-
-        return illuminationColor;
+        return diffuseColor;
     }
 
     extern "C" std::unique_ptr<ILight> getEntryPoint()

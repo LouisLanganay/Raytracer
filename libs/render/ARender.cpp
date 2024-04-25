@@ -124,9 +124,8 @@ namespace RayTracer::Render {
                 closest = primitive;
             }
         }
-        if (!closest) {
+        if (!closest)
             return Vector3D(0, 0, 0);
-        }
         std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
         if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
             // TODO: Implement reflection and refraction
@@ -134,9 +133,9 @@ namespace RayTracer::Render {
         } else {
             color = material->getColor();
         }
+        color.clamp(0, 255);
         for (const auto &light: scene.getLights()) {
-            Vector3D lightColor = light->computeLights(color, ray, rayHit, scene.getPrimitives());
-            finalColor = finalColor + lightColor;
+            finalColor += light->computeLights(color, ray, rayHit, scene.getPrimitives());
         }
         finalColor.clamp(0, 255);
         return finalColor;
@@ -153,5 +152,25 @@ namespace RayTracer::Render {
         _seed ^= _seed >> 7;
         _seed &= 0x7fffffff;
         return randomUnitSphereVectorLookup[index];
+    }
+
+    void ARender::setMaxDepth(int maxDepth)
+    {
+        _maxDepth = maxDepth;
+    }
+
+    void ARender::setSamples(int samples)
+    {
+        _samples = samples;
+    }
+
+    int ARender::getMaxDepth() const
+    {
+        return _maxDepth;
+    }
+
+    int ARender::getSamples() const
+    {
+        return _samples;
     }
 }

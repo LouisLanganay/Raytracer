@@ -31,8 +31,15 @@ namespace RayTracer::Render {
                 Primitives::IPrimitive *lastPrimitive = nullptr
             );
 
+            void setMaxDepth(int maxDepth) override;
+            void setSamples(int samples) override;
+            int getMaxDepth() const override;
+            int getSamples() const override;
+
         protected:
             std::string _filename;
+            int _maxDepth;
+            int _samples;
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
         private:
             std::string _message;

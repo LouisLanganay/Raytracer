@@ -227,6 +227,12 @@ namespace RayTracer {
             throw ParserException("Render type not found");
         if (!setting.exists("filename") || !setting.lookup("filename").isString())
             throw ParserException("Render must have a filename string");
+        if (!setting.exists("maxDepth") || !setting.lookup("maxDepth").isNumber())
+            throw ParserException("Render must have a maxDepth number");
+        if (!setting.exists("samples") || !setting.lookup("samples").isNumber())
+            throw ParserException("Render must have a samples number");
+        render->setMaxDepth(setting["maxDepth"]);
+        render->setSamples(setting["samples"]);
         render->setFilename(setting["filename"]);
         _render = std::move(render);
     }
