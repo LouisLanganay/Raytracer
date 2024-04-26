@@ -21,16 +21,29 @@ namespace RayTracer::Lights {
             void setOrigin(double x, double y, double z) override;
             void setColor(double x, double y, double z) override;
             void setIntensity(double intensity) override;
+            void setPosition(double x, double y, double z) override;
+            void setDirection(double x, double y, double z) override;
 
             std::string getType() const override;
             Point3D getOrigin() const override;
-            Point3D getColor() const override;
+            Vector3D getColor() const override;
+            Point3D getPosition() const override;
             double getIntensity() const override;
+            Vector3D getDirection() const override;
+
+            virtual Vector3D computeLights(
+                Vector3D color,
+                const Ray &ray,
+                const RayHit &hit,
+                const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+            ) const = 0;
         protected:
             std::string _type;
             Point3D _origin;
-            Point3D _color;
+            Vector3D _color;
+            Point3D _position;
             double _intensity;
+            Vector3D _direction;
         private:
     };
 }

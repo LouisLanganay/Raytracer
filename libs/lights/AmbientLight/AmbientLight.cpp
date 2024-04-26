@@ -2,10 +2,10 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** AmbienteLight
+** AmbientLight
 */
 
-#include "AmbienteLight.hpp"
+#include "AmbientLight.hpp"
 #include "../../../src/Loader/LibLoader.hpp"
 #include <memory>
 
@@ -14,8 +14,17 @@ namespace RayTracer::Lights {
     {
     }
 
-    AmbientLight::~AmbientLight()
+    Vector3D AmbientLight::computeLights(
+            Vector3D color,
+            const Ray &ray,
+            const RayHit &hit,
+            const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
+    ) const
     {
+        Vector3D newColor = color * _color;
+        newColor.clamp(0, 255);
+
+        return newColor * (_intensity / 100.0);
     }
 
     extern "C" std::unique_ptr<ILight> getEntryPoint()

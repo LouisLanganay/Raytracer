@@ -10,6 +10,8 @@
 
 #include "IRender.hpp"
 #include "../../src/Camera/Camera.hpp"
+#include "../lights/DirectionalLight/DirectionalLight.hpp"
+#include "../lights/ALight.hpp"
 #include <memory>
 
 namespace RayTracer::Render {
@@ -29,11 +31,20 @@ namespace RayTracer::Render {
                 Primitives::IPrimitive *lastPrimitive = nullptr
             );
 
+            void setMaxDepth(int maxDepth) override;
+            void setSamples(int samples) override;
+            int getMaxDepth() const override;
+            int getSamples() const override;
+
         protected:
             std::string _filename;
+            int _maxDepth;
+            int _samples;
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
         private:
             std::string _message;
+            RayTracer::Lights::DirectionalLight *_light;
+            Vector3D randomInUnitSphere();
             double _lastProgress = -1.0;
             time_t _startTime;
     };

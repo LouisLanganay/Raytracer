@@ -47,3 +47,13 @@ Point3D Ray::getPointAt(double distance) const
 {
     return _origin + _direction * distance;
 }
+
+Point3D Ray::getOrigin() const
+{
+    return _origin;
+}
+
+Vector3D Ray::getDirection() const
+{
+    return _direction;
+}

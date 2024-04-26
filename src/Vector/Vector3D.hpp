@@ -33,10 +33,13 @@ class Vector3D {
         Vector3D& operator*=(double scalar);
         Vector3D operator/(double scalar) const;
         Vector3D& operator/=(double scalar);
+        Vector3D operator*(const Vector3D& other) const;
+        Vector3D operator-() const;
 
         void normalize();
         Vector3D getNormalized() const;
         Vector3D cross(const Vector3D& other) const;
+        void clamp(double min, double max);
 
         double _x;
         double _y;

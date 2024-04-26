@@ -20,11 +20,12 @@ namespace RayTracer::Primitives {
 
     bool Sphere::hit(const Ray& ray, RayHit& hit) const
     {
-        Vector3D oc = ray._origin - _origin;
-        double a = ray._direction.dot(ray._direction);
-        double b = 2.0 * oc.dot(ray._direction);
-        double c = oc.dot(oc) - _radius * _radius;
-        double discriminant = b * b - 4 * a * c;
+        Vector3D oc = ray.getOrigin() - _origin;
+        double a = ray.getDirection().lengthSquared();
+        double b = oc.dot(ray.getDirection());
+        double c = oc.lengthSquared() - _radius * _radius;
+        double discriminant = b * b - a * c;
+
         if (discriminant < 0)
             return false;
         if (discriminant == 0) {

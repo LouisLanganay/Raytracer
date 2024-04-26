@@ -7,18 +7,22 @@
 
 include ../../../Makefile_colors.mk
 
-LIB 		= lib_ambienteLight.so
+LIB 		= lib_point_light.so
 
 VPATH 		:= ./src
 VPATH 		+= ../
+VPATH 		+= ../../../src/Loader
+VPATH 		+= ./
+VPATH 		+= ../../../src/Vector
 VPATH 		+= ../../../src/Point
 VPATH 		+= ../../../src/Ray
 
 vpath %.cpp $(VPATH)
 
-SRC 		:= AmbienteLight.cpp
+SRC			:= PointLight.cpp
 SRC 		+= ALight.cpp
 SRC 		+= Point3D.cpp
+SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
 
 CFLAGS 		= -Wall

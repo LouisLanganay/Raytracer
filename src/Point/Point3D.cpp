@@ -31,3 +31,11 @@ Point3D Point3D::operator-(const Vector3D& vec) const
     return Point3D(_x - vec._x, _y - vec._y, _z - vec._z);
 }
 
+Point3D& Point3D::operator+=(const Vector3D& vec)
+{
+    _x += vec._x;
+    _y += vec._y;
+    _z += vec._z;
+    return *this;
+}
+

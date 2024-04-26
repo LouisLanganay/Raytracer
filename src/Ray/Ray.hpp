@@ -24,6 +24,8 @@ class Ray {
         Ray& operator=(Ray&& other);
 
         Point3D getPointAt(double distance) const;
+        Point3D getOrigin() const;
+        Vector3D getDirection() const;
 
         Point3D _origin;
         Vector3D _direction;

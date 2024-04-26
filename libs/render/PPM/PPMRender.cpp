@@ -16,7 +16,8 @@ namespace RayTracer::Render {
     {
     }
 
-    void PPMRender::renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel) {
+    void PPMRender::renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel)
+    {
         for (int y = start; y < end; ++y) {
             for (int x = 0; x < width; ++x) {
                 Vector3D color(0, 0, 0);
@@ -24,7 +25,7 @@ namespace RayTracer::Render {
                     for (std::size_t l = 0; l < samplesPerPixel; l++) {
                         double u = (x + (k / static_cast<double>(samplesPerPixel))) / width;
                         double v = 1.0 - (y + (l / static_cast<double>(samplesPerPixel))) / height;
-                        color += castRay(u, v, scene, 4);
+                        color += castRay(u, v, scene, _maxDepth);
                     }
                 }
                 {
@@ -40,7 +41,8 @@ namespace RayTracer::Render {
         }
     }
 
-    void PPMRender::render(Scene &scene) {
+    void PPMRender::render(Scene &scene)
+    {
         std::fstream file(_filename, std::ios::out | std::ios::trunc);
         Camera camera = *scene.getCamera();
         int height = camera.getResolution()._y;
