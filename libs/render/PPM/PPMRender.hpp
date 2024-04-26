@@ -5,8 +5,8 @@
 ** Sphere
 */
 
-#ifndef SPHERE_HPP_
-#define SPHERE_HPP_
+#ifndef PPMRENDER_HPP_
+#define PPMRENDER_HPP_
 
 #include "../ARender.hpp"
 #include "../../../src/Camera/Camera.hpp"
@@ -32,4 +32,4 @@ namespace RayTracer::Render {
 }
 
 
-#endif /* !SPHERE_HPP_ */
+#endif /* !PPMRENDER_HPP_ */
