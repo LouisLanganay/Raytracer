@@ -108,7 +108,7 @@ namespace RayTracer::Render {
         Primitives::IPrimitive *closest = nullptr;
         RayHit tmp;
         RayHit rayHit;
-        Vector3D color;
+        Vector3D color(0, 0, 0);
         RayTracer::Materials::Scatter scatter;
         Vector3D finalColor(0, 0, 0);
 
@@ -129,9 +129,9 @@ namespace RayTracer::Render {
         std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
         if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
             // TODO: Implement reflection and refraction
-            color = material->getColor(); // Temporary
+            color = material->getColor(ray, rayHit);
         } else {
-            color = material->getColor();
+            color = material->getColor(ray, rayHit);
         }
         color.clamp(0, 255);
         for (const auto &light: scene.getLights()) {

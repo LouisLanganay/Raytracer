@@ -22,22 +22,20 @@ namespace RayTracer::Lights
     ) const
     {
         static constexpr double kShadowBias = 1e-5;
-        Vector3D lightDirection;
-        lightDirection._x = -_direction._x;
-        lightDirection._y = -_direction._y;
-        lightDirection._z = -_direction._z;
+        Vector3D lightDirection = -_direction;
         lightDirection.normalize();
         double angle = hit.normal.dot(lightDirection);
 
         double shadowIntensity = 1.0;
+        double lightIntensity = _intensity * 0.01;
 
-        Vector3D newColor = color * _color * (_intensity * 0.01);
+        Vector3D newColor = color * _color;
         newColor.clamp(0, 255);
 
         double diffuseIntensity = std::max(0.0, angle) * shadowIntensity;
         Vector3D diffuseColor = newColor * diffuseIntensity;
 
-        return diffuseColor;
+        return diffuseColor * lightIntensity;
     }
 
     extern "C" std::unique_ptr<ILight> getEntryPoint()

@@ -21,7 +21,10 @@ namespace RayTracer::Lights {
             const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
-        return (color * _color) * (_intensity * 0.01);
+        Vector3D newColor = color * _color;
+        newColor.clamp(0, 255);
+
+        return newColor * (_intensity / 100.0);
     }
 
     extern "C" std::unique_ptr<ILight> getEntryPoint()
