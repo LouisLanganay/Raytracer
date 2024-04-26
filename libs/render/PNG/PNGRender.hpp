@@ -1,0 +1,35 @@
+/*
+** EPITECH PROJECT, 2024
+** Raytracer
+** File description:
+** Sphere
+*/
+
+#ifndef PNGRENDER_HPP_
+#define PNGRENDER_HPP_
+
+#include "../ARender.hpp"
+#include "../../../src/Camera/Camera.hpp"
+#include <mutex>
+
+namespace RayTracer::Render {
+    class PNGRender : public ARender {
+        public:
+            PNGRender();
+            virtual ~PNGRender() = default;
+
+            virtual void render(Scene &scene) override;
+            void updateGlobalProgress(int& globalProgress, int progress, int totalPixels);
+        protected:
+        private:
+            std::vector<std::vector<Vector3D>> _image;
+            std::mutex _mutex;
+            int _pixelsRendered;
+
+            void renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel);
+    };
+
+}
+
+
+#endif /* !PNGRENDER_HPP_ */

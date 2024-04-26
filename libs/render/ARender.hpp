@@ -34,6 +34,8 @@ namespace RayTracer::Render {
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
         private:
             std::string _message;
+            double _lastProgress = -1.0;
+            time_t _startTime;
     };
 
 }

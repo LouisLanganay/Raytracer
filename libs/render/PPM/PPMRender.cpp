@@ -69,7 +69,7 @@ namespace RayTracer::Render {
                 file << ir << " " << ig << " " << ib << "\n";
             }
             rowProgress++;
-            updateProgress(rowProgress, height, "Generating image");
+            updateProgress(rowProgress, height, "Generating .ppm image");
         }
         file.close();
         std::cout << std::endl;
