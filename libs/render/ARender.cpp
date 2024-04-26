@@ -65,6 +65,7 @@ namespace RayTracer::Render {
     };
     ARender::ARender()
     {
+        _startTime = time(0);
     }
 
     void ARender::setFilename(const std::string &filename)
@@ -76,6 +77,10 @@ namespace RayTracer::Render {
     {
         double progress = static_cast<double>(pixelsRendered) / totalPixels;
 
+        if (_lastProgress + 0.01 > progress & progress != 1.0)
+            return;
+        _lastProgress = progress;
+
         if (message != _message && _message != "")
             std::cout << std::endl;
 
@@ -83,11 +88,47 @@ namespace RayTracer::Render {
         int barWidth = 50;
         int pos = static_cast<int>(barWidth * progress);
         for (int i = 0; i < barWidth; ++i) {
-            if (i < pos) std::cout << "=";
-            else if (i == pos) std::cout << ">";
-            else std::cout << " ";
+            if (i < pos) {
+                if (progress < 0.5)
+                    std::cout << "\033[31m";
+                else if (progress < 0.99)
+                    std::cout << "\033[33m";
+                else
+                    std::cout << "\033[32m";
+                std::cout << "=";
+            }
+            else if (i == pos) {
+                if (progress < 0.5)
+                    std::cout << "\033[31m>";
+                else if (progress < 0.99)
+                    std::cout << "\033[33m>";
+                else
+                    std::cout << "\033[32m>";
+            }
+            else
+                std::cout << " ";
         }
-        std::cout << "] " << std::fixed << std::setprecision(2) << progress * 100.0 << "% (" << pixelsRendered << "/" << totalPixels << ")";
+        std::cout << "\033[0m] " << std::fixed << std::setprecision(2) << progress * 100.0 << "%";
+        std::cout << " - (" << pixelsRendered << "/" << totalPixels << ")";
+
+        if (progress > 0) {
+            time_t currentTime = time(0);
+            int elapsedTime = currentTime - _startTime;
+            int remainingTime = static_cast<int>(elapsedTime / progress) - elapsedTime;
+
+            std::cout << " - Remaining time: ";
+            int hours = remainingTime / 3600;
+            int minutes = (remainingTime % 3600) / 60;
+            remainingTime = remainingTime % 60;
+            if (hours > 0) {
+                if (hours < 10) std::cout << "0";
+                std::cout << hours << ":";
+            }
+            if (minutes < 10) std::cout << "0";
+            std::cout << minutes << ":";
+            if (remainingTime < 10) std::cout << "0";
+            std::cout << remainingTime;
+        }
         std::cout.flush();
         _message = message;
     }

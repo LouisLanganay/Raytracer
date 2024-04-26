@@ -5,18 +5,18 @@
 ** Sphere
 */
 
-#ifndef PPMRENDER_HPP_
-#define PPMRENDER_HPP_
+#ifndef PNGRENDER_HPP_
+#define PNGRENDER_HPP_
 
 #include "../ARender.hpp"
 #include "../../../src/Camera/Camera.hpp"
 #include <mutex>
 
 namespace RayTracer::Render {
-    class PPMRender : public ARender {
+    class PNGRender : public ARender {
         public:
-            PPMRender();
-            virtual ~PPMRender() = default;
+            PNGRender();
+            virtual ~PNGRender() = default;
 
             virtual void render(Scene &scene) override;
             void updateGlobalProgress(int& globalProgress, int progress, int totalPixels);
@@ -32,4 +32,4 @@ namespace RayTracer::Render {
 }
 
 
-#endif /* !PPMRENDER_HPP_ */
+#endif /* !PNGRENDER_HPP_ */

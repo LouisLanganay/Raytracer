@@ -5,19 +5,19 @@
 ** Sphere
 */
 
-#include "PPMRender.hpp"
+#include "PNGRender.hpp"
 #include "../../../src/Loader/LibLoader.hpp"
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <SFML/Graphics.hpp>
 
 namespace RayTracer::Render {
-    PPMRender::PPMRender() : _mutex(), _pixelsRendered(0)
+    PNGRender::PNGRender() : _mutex(), _pixelsRendered(0)
     {
     }
 
-    void PPMRender::renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel)
-    {
+    void PNGRender::renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel) {
         for (int y = start; y < end; ++y) {
             for (int x = 0; x < width; ++x) {
                 Vector3D color(0, 0, 0);
@@ -25,7 +25,7 @@ namespace RayTracer::Render {
                     for (std::size_t l = 0; l < samplesPerPixel; l++) {
                         double u = (x + (k / static_cast<double>(samplesPerPixel))) / width;
                         double v = 1.0 - (y + (l / static_cast<double>(samplesPerPixel))) / height;
-                        color += castRay(u, v, scene, _maxDepth);
+                        color += castRay(u, v, scene, 4);
                     }
                 }
                 {
@@ -41,9 +41,7 @@ namespace RayTracer::Render {
         }
     }
 
-    void PPMRender::render(Scene &scene)
-    {
-        std::fstream file(_filename, std::ios::out | std::ios::trunc);
+    void PNGRender::render(Scene &scene) {
         Camera camera = *scene.getCamera();
         int height = camera.getResolution()._y;
         int width = camera.getResolution()._x;
@@ -53,34 +51,34 @@ namespace RayTracer::Render {
         std::vector<int> threadProgress(numThreads, 0);
         int rowProgress = 0;
 
-        if (!file.is_open()) {
-            std::cerr << "Error: Could not open file" << std::endl;
-            return;
-        }
-        file << "P3\n" << width << " " << height << "\n255\n";
+        sf::Image image;
+        image.create(width, height);
+
         _image.resize(height);
         for (int i = 0; i < numThreads; ++i)
-            threads.emplace_back(&PPMRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, 4);
+            threads.emplace_back(&PNGRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, 4);
         for (auto& thread : threads)
             thread.join();
-        for (std::vector<Vector3D>& row : _image) {
-            for (Vector3D& color : row) {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                Vector3D color = _image[y][x];
                 int ir = static_cast<int>(color._x);
                 int ig = static_cast<int>(color._y);
                 int ib = static_cast<int>(color._z);
-                file << ir << " " << ig << " " << ib << "\n";
+                sf::Color pixelColor(ir, ig, ib);
+                image.setPixel(x, y, pixelColor);
             }
             rowProgress++;
-            updateProgress(rowProgress, height, "Generating .ppm image");
+            updateProgress(rowProgress, height, "Generating .png image");
         }
-        file.close();
-        std::cout << std::endl;
+        image.saveToFile(_filename);
     }
+
 
 
     extern "C" std::unique_ptr<IRender> getEntryPoint()
     {
-        return std::make_unique<PPMRender>();
+        return std::make_unique<PNGRender>();
     }
 
     extern "C" std::unique_ptr<PluginType> getTypePoint()
@@ -90,6 +88,6 @@ namespace RayTracer::Render {
 
     extern "C" std::unique_ptr<std::string> getNamePoint()
     {
-        return std::make_unique<std::string>("ppm");
+        return std::make_unique<std::string>("png");
     }
 }

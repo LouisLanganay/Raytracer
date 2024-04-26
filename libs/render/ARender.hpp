@@ -45,6 +45,8 @@ namespace RayTracer::Render {
             std::string _message;
             RayTracer::Lights::DirectionalLight *_light;
             Vector3D randomInUnitSphere();
+            double _lastProgress = -1.0;
+            time_t _startTime;
     };
 
 }

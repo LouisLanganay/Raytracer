@@ -76,6 +76,7 @@ plugins:
 	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
 	@ make -s -C ./libs/render/PPM
+	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
 
 debug: CFLAGS += -g
@@ -92,6 +93,7 @@ clean:
 	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ make clean -s -C ./libs/render/PPM
+	@ make clean -s -C ./libs/render/PNG
 	@ make clean -s -C ./libs/materials/Flat
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
@@ -104,6 +106,7 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Flat${_END}"
 
 fclean: clean
@@ -116,6 +119,7 @@ fclean: clean
 	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
 	@ make fclean -s -C ./libs/render/PPM
+	@ make fclean -s -C ./libs/render/PNG
 	@ make fclean -s -C ./libs/materials/Flat
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
@@ -126,6 +130,7 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"
 
 re: fclean all
