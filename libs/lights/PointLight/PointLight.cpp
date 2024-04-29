@@ -21,30 +21,14 @@ namespace RayTracer::Lights
         const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
-        static constexpr double kShadowBias = 1e-5;
         Vector3D lightDir = _position - hit.point;
-        Vector3D shadowDir = hit.point - _position;
-        Ray shadowRay(_position, shadowDir.getNormalized());
+        double distance = lightDir.length();
+        lightDir.normalize();
         double angle = hit.normal.dot(lightDir);
 
-        for (const auto &primitive : primitives) {
-            RayHit shadowHit;
-            if (primitive == hit.primitive)
-                continue;
-            if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
-                return Vector3D(0, 0, 0);
-            }
-        }
+        Vector3D shadowIntensity = computeShadowIntensity(color, ray, hit, primitives);
 
-        double shadowIntensity = 1.0;
-
-        Vector3D newColor = color * _color * (_intensity * 0.01);
-        newColor.clamp(0, 255);
-
-        double diffuseIntensity = std::max(0.0, angle) * shadowIntensity;
-        Vector3D diffuseColor = newColor * diffuseIntensity;
-
-        return diffuseColor;
+        return shadowIntensity;
     }
 
     Vector3D PointLight::computeShadowIntensity(
@@ -56,25 +40,26 @@ namespace RayTracer::Lights
     {
         static constexpr double kShadowBias = 1e-5;
         Vector3D lightDir = _position - hit.point;
-        Vector3D shadowDir = hit.point - _position;
-        Ray shadowRay(_position, shadowDir.getNormalized());
+        double distance = lightDir.length();
+        lightDir.normalize();
         double angle = hit.normal.dot(lightDir);
 
-        for (const auto &primitive : primitives) {
-            RayHit shadowHit;
+        Ray shadowRay(hit.point + hit.normal * kShadowBias, lightDir);
+        RayHit tmp;
+        tmp.distance = std::numeric_limits<double>::max();
+        for (Primitives::IPrimitive *primitive: primitives) {
             if (primitive == hit.primitive)
                 continue;
-            if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
+            bool hit = primitive->hit(shadowRay, tmp);
+            if (hit && tmp.distance > 0 && tmp.distance < distance) {
                 return Vector3D(0, 0, 0);
             }
         }
 
-        double shadowIntensity = 1.0;
-
         Vector3D newColor = color * _color * (_intensity * 0.01);
         newColor.clamp(0, 255);
 
-        double diffuseIntensity = std::max(0.0, angle) * shadowIntensity;
+        double diffuseIntensity = std::max(0.0, angle);
         Vector3D diffuseColor = newColor * diffuseIntensity;
 
         return diffuseColor;
