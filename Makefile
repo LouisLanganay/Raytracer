@@ -20,6 +20,7 @@ VPATH 		+= ./src/Camera
 VPATH 		+= ./src/Point
 VPATH 		+= ./src/Ray
 VPATH 		+= ./src/Rectangle
+VPATH 		+= ./src/Builders
 
 vpath %.cpp $(VPATH)
 

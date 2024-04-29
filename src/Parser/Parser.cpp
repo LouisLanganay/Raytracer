@@ -11,6 +11,10 @@
 #include <iostream>
 #include "Exceptions.hpp"
 #include "LibLoader.hpp"
+#include "../Builders/CameraBuilder.hpp"
+#include "../Builders/RenderBuilder.hpp"
+#include "../Builders/LightBuilder.hpp"
+#include "../Builders/PrimitiveBuilder.hpp"
 
 namespace RayTracer {
     Parser::Parser(
@@ -60,41 +64,29 @@ namespace RayTracer {
     {
         if (!setting.isGroup())
             throw ParserException("Camera must be a group");
-        if (!setting.exists("position") || !setting.lookup("position").isGroup() ||
-            !setting["position"].exists("x") || !setting["position"].exists("y") ||
-            !setting["position"].exists("z") || !setting["position"]["x"].isNumber() ||
-            !setting["position"]["y"].isNumber() || !setting["position"]["z"].isNumber())
-            throw ParserException("Camera must have a position group");
-        if (!setting.exists("fieldOfView") || !setting.lookup("fieldOfView").isNumber())
-            throw ParserException("Camera must have a fieldOfView number");
-        if (!setting.exists("resolution") || !setting.lookup("resolution").isGroup() ||
-            !setting["resolution"].exists("x") || !setting["resolution"].exists("y") ||
-            !setting["resolution"]["x"].isNumber() || !setting["resolution"]["y"].isNumber())
-            throw ParserException("Camera must have a resolution group");
-        if (!setting.exists("rotation") || !setting.lookup("rotation").isGroup() ||
-            !setting["rotation"].exists("x") || !setting["rotation"].exists("y") ||
-            !setting["rotation"].exists("z") || !setting["rotation"]["x"].isNumber() ||
-            !setting["rotation"]["y"].isNumber() || !setting["rotation"]["z"].isNumber())
-            throw ParserException("Camera must have a rotation group");
 
-        std::unique_ptr<Camera> camera = std::make_unique<Camera>(
-            Point3D(
-                    parseDouble(setting["position"]["x"]),
-                    parseDouble(setting["position"]["y"]),
-                    parseDouble(setting["position"]["z"])
-            ),
-            Point3D(
-                parseDouble(setting["resolution"]["x"]),
-                parseDouble(setting["resolution"]["y"]),
-                0
-            )
-        );
-        camera->setFov(parseDouble(setting["fieldOfView"]));
-        camera->setRotation(
-            parseDouble(setting["rotation"]["x"]),
-            parseDouble(setting["rotation"]["y"]),
-            parseDouble(setting["rotation"]["z"])
-        );
+        RayTracer::Builders::CameraBuilder builder;
+        std::vector<std::string> Point3DKeys = {"position", "resolution", "rotation"};
+        std::vector<std::string> doubleKeys = {"fieldOfView"};
+
+        for (const auto &key : Point3DKeys) {
+            if (!setting.exists(key) || !setting[key].isGroup() ||
+                !setting[key].exists("x") || !setting[key].exists("y") ||
+                !setting[key].exists("z") || !setting[key]["x"].isNumber() ||
+                !setting[key]["y"].isNumber() || !setting[key]["z"].isNumber())
+                throw ParserException("Camera must have a " + key + " group");
+            builder.set(key, Point3D(
+                parseDouble(setting[key]["x"]),
+                parseDouble(setting[key]["y"]),
+                parseDouble(setting[key]["z"])
+            ));
+        }
+        for (const auto &key : doubleKeys) {
+            if (!setting.exists(key) || !setting[key].isNumber())
+                throw ParserException("Camera must have a " + key + " number");
+            builder.set(key, parseDouble(setting[key]));
+        }
+        std::unique_ptr<Camera> camera = std::make_unique<Camera>(builder.build());
         _scene->setCamera(camera);
     }
 
@@ -112,39 +104,44 @@ namespace RayTracer {
     {
         if (!setting.isGroup())
             throw ParserException("Light must be a group");
+        std::string type = setting["type"];
         std::unique_ptr<Lights::ILight> light = _libLoader.getLightFactory().create(setting["type"]);
         if (!light)
             throw ParserException("Light type not found");
-        if (!setting.isGroup())
-            throw ParserException("Light must be a group");
-        if (!setting.exists("type") || !setting.lookup("type").isString())
-            throw ParserException("Light must have a type string");
-        if (!setting.exists("color") || !setting.lookup("color").isGroup() ||
-            !setting["color"].exists("r") || !setting["color"].exists("g") ||
-            !setting["color"].exists("b") || !setting["color"]["r"].isNumber() ||
-            !setting["color"]["g"].isNumber() || !setting["color"]["b"].isNumber())
-            throw ParserException("Light must have a color group");
-        if (!setting.exists("intensity") || !setting.lookup("intensity").isNumber())
-            throw ParserException("Light must have an intensity number");
-        light->setType(setting["type"]);
-        if (setting.exists("position"))
-            light->setOrigin(
+        RayTracer::Builders::LightBuilder builder(light.get());
+        std::vector<std::string> doubleKeys = {"intensity"};
+        std::vector<std::string> Vector3DKeys = {"color"};
+
+        for (const auto &key : doubleKeys) {
+            if (!setting.exists(key) || !setting[key].isNumber())
+                throw ParserException("Light must have a " + key + " number");
+            builder.set(key, parseDouble(setting[key]));
+        }
+        for (const auto &key : Vector3DKeys) {
+            if (!setting.exists(key) || !setting[key].isGroup() ||
+                !setting[key].exists("r") || !setting[key].exists("g") ||
+                !setting[key].exists("b") || !setting[key]["r"].isNumber() ||
+                !setting[key]["g"].isNumber() || !setting[key]["b"].isNumber())
+                throw ParserException("Light must have a " + key + " group");
+            builder.set(key, Vector3D(
+                parseDouble(setting[key]["r"]),
+                parseDouble(setting[key]["g"]),
+                parseDouble(setting[key]["b"])
+            ));
+        }
+        builder.set("type", type);
+        if (type == "point" && setting.exists("position"))
+            builder.set("position", Point3D(
                 parseDouble(setting["position"]["x"]),
                 parseDouble(setting["position"]["y"]),
                 parseDouble(setting["position"]["z"])
-            );
-        if (setting.exists("direction"))
-            light->setDirection(
+            ));
+        if (type == "directional" && setting.exists("direction"))
+            builder.set("direction", Vector3D(
                 parseDouble(setting["direction"]["x"]),
                 parseDouble(setting["direction"]["y"]),
                 parseDouble(setting["direction"]["z"])
-            );
-        light->setColor(
-            parseDouble(setting["color"]["r"]),
-            parseDouble(setting["color"]["g"]),
-            parseDouble(setting["color"]["b"])
-        );
-        light->setIntensity(parseDouble(setting["intensity"]));
+            ));
         _scene->addLight(light);
     }
 
@@ -165,51 +162,46 @@ namespace RayTracer {
         std::unique_ptr<Primitives::IPrimitive> primitive = _libLoader.getPrimitiveFactory().create(setting["type"]);
         if (!primitive)
             throw ParserException("Primitive type not found");
-        if (!setting.exists("position") || !setting.lookup("position").isGroup() ||
-            !setting["position"].exists("x") || !setting["position"].exists("y") ||
-            !setting["position"].exists("z") || !setting["position"]["x"].isNumber() ||
-            !setting["position"]["y"].isNumber() || !setting["position"]["z"].isNumber())
-            throw ParserException("Primitive must have a position group");
-        if (!setting.exists("type") || !setting.lookup("type").isString())
-            throw ParserException("Primitive must have type");
-        if (!setting.exists("material") || !setting.lookup("material").isString())
-            throw ParserException("Primitive must have material");
+        RayTracer::Builders::PrimitiveBuilder builder(primitive.get());
+        std::vector<std::string> Point3DKeys = {"position"};
 
-        primitive->setType(setting["type"]);
-        primitive->setOrigin(
-            parseDouble(setting["position"]["x"]),
-            parseDouble(setting["position"]["y"]),
-            parseDouble(setting["position"]["z"])
-        );
+        for (const auto &key : Point3DKeys) {
+            if (!setting.exists(key) || !setting[key].isGroup() ||
+                !setting[key].exists("x") || !setting[key].exists("y") ||
+                !setting[key].exists("z") || !setting[key]["x"].isNumber() ||
+                !setting[key]["y"].isNumber() || !setting[key]["z"].isNumber())
+                throw ParserException("Primitive must have a " + key + " group");
+            builder.set(key, Point3D(
+                    parseDouble(setting[key]["x"]),
+                    parseDouble(setting[key]["y"]),
+                    parseDouble(setting[key]["z"])
+            ));
+        }
+
+        builder.set("type", type);
         if (type == "sphere") {
             if (!setting.exists("radius") || !setting.lookup("radius").isNumber())
-                throw ParserException("Sphere must have a radius");
+                throw ParserException(type + " must have a radius");
             else
-                primitive->setRadius(parseDouble(setting["radius"]));
+                builder.set("radius", parseDouble(setting["radius"]));
         }
         if (type == "cylinder" || type == "cone") {
             if (!setting.exists("width") || !setting.lookup("width").isNumber())
-                throw ParserException("Cylinder must have a width");
+                throw ParserException(type + " must have a width");
             if (!setting.exists("height") || !setting.lookup("height").isNumber())
-                throw ParserException("Cylinder must have a height");
-            primitive->setRadius(parseDouble(setting["radius"]));
-            primitive->setHeight(parseDouble(setting["height"]));
+                throw ParserException(type + " must have a height");
+            builder.set("width", parseDouble(setting["width"]));
+            builder.set("height", parseDouble(setting["height"]));
         }
-        if (setting.exists("axis")) {
-            std::string arg = setting["axis"];
-            if (arg == "Z")
-                primitive->setAxis(RayTracer::Primitives::Axis::Z);
-            else if (arg == "Y")
-                primitive->setAxis(RayTracer::Primitives::Axis::Y);
-            else if (arg == "X")
-                primitive->setAxis(RayTracer::Primitives::Axis::X);
-            else
-                throw ParserException("Unknown axis");
+        if (type == "plane") {
+            if (!setting.exists("axis") || !setting.lookup("axis").isString())
+                throw ParserException(type + " must have an axis");
+            builder.set("axis", setting["axis"]);
         }
         std::shared_ptr<RayTracer::Materials::IMaterial> material = _materials[setting["material"]];
         if (!material)
             throw ParserException("Material not found");
-        primitive->setMaterial(material);
+        builder.set("material", material);
         _scene->addPrimitive(primitive);
     }
 
@@ -222,18 +214,18 @@ namespace RayTracer {
     {
         if (!setting.isGroup())
             throw ParserException("Rendering must be a group");
+        RayTracer::Builders::RenderBuilder builder;
+        std::vector<std::string> keys = {"filename", "type"};
+
+        for (const auto &key : keys) {
+            if (!setting.exists(key) || !setting[key].isString())
+                throw ParserException("Rendering must have a " + key + " string");
+            builder.set(key, setting[key]);
+        }
         std::unique_ptr<Render::IRender> render = _libLoader.getRenderFactory().create(setting["type"]);
         if (!render)
             throw ParserException("Render type not found");
-        if (!setting.exists("filename") || !setting.lookup("filename").isString())
-            throw ParserException("Render must have a filename string");
-        if (!setting.exists("maxDepth") || !setting.lookup("maxDepth").isNumber())
-            throw ParserException("Render must have a maxDepth number");
-        if (!setting.exists("samples") || !setting.lookup("samples").isNumber())
-            throw ParserException("Render must have a samples number");
-        render->setMaxDepth(setting["maxDepth"]);
-        render->setSamples(setting["samples"]);
-        render->setFilename(setting["filename"]);
+        render->setFilename(builder.getFilename());
         _render = std::move(render);
     }
 
