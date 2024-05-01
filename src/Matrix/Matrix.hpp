@@ -50,8 +50,8 @@ namespace RayTracer {
 
         protected:
             std::vector<std::vector<double>> _data;
-            int rows;
-            int cols;
+            int _rows;
+            int _cols;
 
     };
 }
