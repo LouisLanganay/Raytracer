@@ -56,7 +56,7 @@ namespace RayTracer::Render {
 
         _image.resize(height);
         for (int i = 0; i < numThreads; ++i)
-            threads.emplace_back(&PNGRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, 4);
+            threads.emplace_back(&PNGRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, _samples);
         for (auto& thread : threads)
             thread.join();
         for (int y = 0; y < height; ++y) {

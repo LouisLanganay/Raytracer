@@ -47,6 +47,7 @@ namespace RayTracer::Render {
             Vector3D randomInUnitSphere();
             double _lastProgress = -1.0;
             time_t _startTime;
+            std::size_t _seed;
     };
 
 }
