@@ -78,6 +78,7 @@ plugins:
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
+	@ make -s -C ./libs/materials/Mirror
 
 debug: CFLAGS += -g
 
@@ -95,6 +96,7 @@ clean:
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/render/PNG
 	@ make clean -s -C ./libs/materials/Flat
+	@ make clean -s -C ./libs/materials/Mirror
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcov${_END}"
@@ -108,6 +110,7 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Flat${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Mirror${_END}"
 
 fclean: clean
 	@ $(RM) -r $(BUILD_DIR)
@@ -121,6 +124,7 @@ fclean: clean
 	@ make fclean -s -C ./libs/render/PPM
 	@ make fclean -s -C ./libs/render/PNG
 	@ make fclean -s -C ./libs/materials/Flat
+	@ make fclean -s -C ./libs/materials/Mirror
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
@@ -132,6 +136,7 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Mirror${_END}"
 
 re: fclean all
 

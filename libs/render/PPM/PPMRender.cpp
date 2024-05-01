@@ -60,7 +60,7 @@ namespace RayTracer::Render {
         file << "P3\n" << width << " " << height << "\n255\n";
         _image.resize(height);
         for (int i = 0; i < numThreads; ++i)
-            threads.emplace_back(&PPMRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, 4);
+            threads.emplace_back(&PPMRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, _samples);
         for (auto& thread : threads)
             thread.join();
         for (std::vector<Vector3D>& row : _image) {

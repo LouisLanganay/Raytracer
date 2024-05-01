@@ -66,6 +66,7 @@ namespace RayTracer::Render {
     ARender::ARender()
     {
         _startTime = time(0);
+        _seed = static_cast<std::size_t>(time(nullptr));
     }
 
     void ARender::setFilename(const std::string &filename)
@@ -169,7 +170,17 @@ namespace RayTracer::Render {
             return Vector3D(0, 0, 0);
         std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
         if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
-            // TODO: Implement reflection and refraction
+            //Vector3D reflectedColor;
+            //for (std::size_t i = 0; i < 3; i++) {
+            //    Point3D reflectedOrigin = scatter.reflected.getOrigin() + scatter.reflected.getDirection() * 0.001;
+            //    reflectedOrigin += randomInUnitSphere() * 0.1;
+            //    Ray reflectedRay(reflectedOrigin, scatter.reflected.getDirection());
+            //    reflectedColor += castRay(scatter.reflected, scene, depth - 1, closest) * scatter.reflectionIndex;
+            //}
+            //reflectedColor /= 3;
+            //reflectedColor.clamp(0, 255);
+            //color = material->getColor(ray, rayHit) * scatter.attenuation * (1 - scatter.reflectionIndex);
+            //color += reflectedColor * scatter.reflectionIndex * scatter.attenuation;
             color = material->getColor(ray, rayHit);
         } else {
             color = material->getColor(ray, rayHit);
@@ -184,7 +195,6 @@ namespace RayTracer::Render {
 
     Vector3D ARender::randomInUnitSphere()
     {
-        static std::size_t _seed = static_cast<std::size_t>(time(nullptr));
         std::size_t index = _seed % 20;
 
         _seed <<= 1;
