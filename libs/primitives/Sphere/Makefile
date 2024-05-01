@@ -14,6 +14,7 @@ VPATH 		+= ../
 VPATH 		+= ../../../src/Point
 VPATH 		+= ../../../src/Vector
 VPATH 		+= ../../../src/Ray
+VPATH 		+= ../../../src/Matrix
 
 vpath %.cpp $(VPATH)
 
@@ -22,6 +23,7 @@ SRC 		+= APrimitive.cpp
 SRC 		+= Point3D.cpp
 SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
+SRC 		+= Matrix.cpp
 
 CFLAGS 		= -Wall
 

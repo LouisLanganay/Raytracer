@@ -20,6 +20,7 @@ VPATH 		+= ./src/Camera
 VPATH 		+= ./src/Point
 VPATH 		+= ./src/Ray
 VPATH 		+= ./src/Rectangle
+VPATH 		+= ./src/Matrix
 
 vpath %.cpp $(VPATH)
 
@@ -32,6 +33,7 @@ SRC 		+= Point3D.cpp
 SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
 SRC 		+= Rectangle3D.cpp
+SRC 		+= Matrix.cpp
 
 BUILD_DIR 	= build
 OBJ 		:= $(SRC:%.c=$(BUILD_DIR)/%.o)

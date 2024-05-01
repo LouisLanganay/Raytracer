@@ -16,10 +16,11 @@ namespace RayTracer::Primitives {
             Sphere();
             ~Sphere();
 
-            bool hit(const Ray& ray, RayHit& hit) const override;
+            bool hit(const Ray& ray, RayHit& hit) override;
 
         protected:
         private:
+            Point3D _center;
     };
 }
 
