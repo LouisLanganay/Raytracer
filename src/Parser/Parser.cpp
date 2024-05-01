@@ -198,6 +198,24 @@ namespace RayTracer {
                 throw ParserException(type + " must have an axis");
             builder.set("axis", setting["axis"]);
         }
+        if (setting.exists("translation"))
+            builder.set("translation", Point3D(
+                parseDouble(setting["translation"]["x"]),
+                parseDouble(setting["translation"]["y"]),
+                parseDouble(setting["translation"]["z"])
+            ));
+        if (setting.exists("rotation"))
+            builder.set("rotation", Point3D(
+                parseDouble(setting["rotation"]["x"]),
+                parseDouble(setting["rotation"]["y"]),
+                parseDouble(setting["rotation"]["z"])
+            ));
+        if (setting.exists("scale"))
+            builder.set("scale", Point3D(
+                parseDouble(setting["scale"]["x"]),
+                parseDouble(setting["scale"]["y"]),
+                parseDouble(setting["scale"]["z"])
+            ));
         std::shared_ptr<RayTracer::Materials::IMaterial> material = _materials[setting["material"]];
         if (!material)
             throw ParserException("Material not found");

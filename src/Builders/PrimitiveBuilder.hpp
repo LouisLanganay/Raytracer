@@ -33,7 +33,11 @@ namespace RayTracer::Builders {
                 if (key == "position")
                     _primitive->setOrigin(value._x, value._y, value._z);
                 if (key == "rotation")
-                    _primitive->setRotation(value._x, value._y, value._z);
+                    _primitive->setRotation(Vector3D(value._x, value._y, value._z));
+                if (key == "scale")
+                    _primitive->setScale(Vector3D(value._x, value._y, value._z));
+                if (key == "translation")
+                    _primitive->setTranslation(Vector3D(value._x, value._y, value._z));
                 return *this;
             }
 
