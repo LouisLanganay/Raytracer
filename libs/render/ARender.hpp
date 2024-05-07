@@ -41,6 +41,7 @@ namespace RayTracer::Render {
             int _maxDepth;
             int _samples;
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
+            void log(const std::string &message);
         private:
             std::string _message;
             RayTracer::Lights::DirectionalLight *_light;
