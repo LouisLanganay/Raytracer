@@ -77,6 +77,7 @@ plugins:
 	@ make -s -C ./libs/lights/PointLight
 	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
+	@ make -s -C ./libs/primitives/Cylinder
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat

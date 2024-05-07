@@ -179,18 +179,15 @@ namespace RayTracer {
         }
 
         builder.set("type", type);
-        if (type == "sphere") {
+        if (type == "sphere" || type == "cylinder" || type == "cone") {
             if (!setting.exists("radius") || !setting.lookup("radius").isNumber())
                 throw ParserException(type + " must have a radius");
             else
                 builder.set("radius", parseDouble(setting["radius"]));
         }
         if (type == "cylinder" || type == "cone") {
-            if (!setting.exists("width") || !setting.lookup("width").isNumber())
-                throw ParserException(type + " must have a width");
             if (!setting.exists("height") || !setting.lookup("height").isNumber())
                 throw ParserException(type + " must have a height");
-            builder.set("width", parseDouble(setting["width"]));
             builder.set("height", parseDouble(setting["height"]));
         }
         if (type == "plane") {
