@@ -20,12 +20,13 @@ namespace RayTracer::Primitives {
 
     bool Sphere::hit(const Ray& ray, RayHit& hit)
     {
-        if (!_center._x && !_center._y && !_center._z) {
+        if (!_isCenterSet) {
             Matrix transformation = getTransformationMatrix();
             _center = getOrigin();
             _center._x += transformation(0, 3);
             _center._y += transformation(1, 3);
             _center._z += transformation(2, 3);
+            _isCenterSet = true;
         }
         Vector3D oc = ray.getOrigin() - _center;
         double a = ray.getDirection().lengthSquared();
