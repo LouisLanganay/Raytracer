@@ -16,10 +16,9 @@ namespace RayTracer::Render {
     class PNGRender : public ARender {
         public:
             PNGRender();
-            virtual ~PNGRender() = default;
+            ~PNGRender();
 
             virtual void render(Scene &scene) override;
-            void updateGlobalProgress(int& globalProgress, int progress, int totalPixels);
         protected:
         private:
             std::vector<std::vector<Vector3D>> _image;

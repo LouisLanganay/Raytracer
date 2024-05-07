@@ -21,6 +21,7 @@ namespace RayTracer::Primitives {
         protected:
         private:
             Point3D _center;
+            bool _isCenterSet = false;
     };
 }
 

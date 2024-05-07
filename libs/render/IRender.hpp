@@ -16,7 +16,7 @@ namespace RayTracer::Render {
     class IRender {
         public:
             IRender() = default;
-            ~IRender() = default;
+            virtual ~IRender() = default;
 
             virtual void render(Scene &Scene) = 0;
             virtual void setFilename(const std::string &filename) = 0;
