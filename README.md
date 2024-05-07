@@ -16,9 +16,26 @@ Your goal is to create a program able to generate an image from a file describin
 > [!IMPORTANT]
 > View the GitHub WIKI for more information about the project. :warning:
 
+## Usage
+
+### Build
+
+```bash
+∼/B-OOP-400> make
+```
+
+### Run
+
+```bash
+∼/B-OOP-400> ./raytracer --help
+USAGE: ./raytracer <SCENE_FILE>
+    SCENE_FILE: scene configuration
+```
+
 ## Contributions
 
 Project members:
 - [Valentin P.](https://github.com/ValentinPeron)
 - [Guillaume B.](https://github.com/Gaulaume)
 - [Louis L.](https://github.com/LouisLanganay)
+- [Augustin B.]()
