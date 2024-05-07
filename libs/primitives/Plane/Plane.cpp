@@ -5,23 +5,24 @@
 ** Cylinder
 */
 
-#include "Cylinder.hpp"
+#include "Plane.hpp"
 #include <cmath>
 #include "../../../src/Loader/LibLoader.hpp"
 #include <memory>
 
 namespace RayTracer::Primitives {
-    Cylinder::Cylinder()
+    Plane::Plane()
     {
     }
 
-    Cylinder::~Cylinder()
+    Plane::~Plane()
     {
     }
 
-    bool Cylinder::hit(const Ray &ray, RayHit &hit)
+    bool Plane::hit(const Ray &ray, RayHit &hit)
     {
         Vector3D oc = ray.getOrigin() - _center;
+
 
         float a = ray.getDirection()._x * ray.getDirection()._x + ray.getDirection()._z * ray.getDirection()._z;
         float b = 2 * (oc._x * ray.getDirection()._x + oc._z * ray.getDirection()._z);
@@ -33,7 +34,7 @@ namespace RayTracer::Primitives {
 
         float t1 = (-b - sqrt(delta)) / (2 * a);
         float t2 = (-b + sqrt(delta)) / (2 * a);
-
+        
         float t_hit = std::min(t1, t2);
         if (t_hit > 0) {
             hit.point = ray.getPointAt(t_hit);
@@ -49,11 +50,9 @@ namespace RayTracer::Primitives {
         return false;
     }
 
-
-
     extern "C" std::unique_ptr<IPrimitive> getEntryPoint()
     {
-        return std::make_unique<Cylinder>();
+        return std::make_unique<Plane>();
     }
 
     extern "C" std::unique_ptr<PluginType> getTypePoint()
@@ -63,6 +62,7 @@ namespace RayTracer::Primitives {
 
     extern "C" std::unique_ptr<std::string> getNamePoint()
     {
-        return std::make_unique<std::string>("cylinder");
+        return std::make_unique<std::string>("plane");
     }
+
 }

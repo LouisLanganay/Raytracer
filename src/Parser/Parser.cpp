@@ -191,7 +191,7 @@ namespace RayTracer {
             builder.set("height", parseDouble(setting["height"]));
         }
         if (type == "plane") {
-            if (!setting.exists("axis") || !setting.lookup("axis").isString())
+            if (!setting.exists("axis"))
                 throw ParserException(type + " must have an axis");
             builder.set("axis", setting["axis"]);
         }
