@@ -24,29 +24,6 @@ namespace RayTracer::Lights
         static constexpr double kShadowBias = 1e-5;
         Vector3D lightDirection = -_direction;
         lightDirection.normalize();
-        lightDirection._x += hit.point._x;
-        lightDirection._y += hit.point._y;
-        lightDirection._z += hit.point._z;
-        Ray lightRay = Ray(hit.point, lightDirection);
-        RayHit lightHit;
-        lightHit.point = {0, 0, 0};
-        lightHit.distance = std::numeric_limits<double>::max();
-        lightHit.normal = {0, 0, 0};
-        lightHit.primitive = nullptr;
-
-        bool ValidHit = false;
-
-        for (auto &primitive: primitives) {
-            if (primitive != hit.primitive) {
-                ValidHit = primitive->hit(lightRay, lightHit);
-            }
-            if (ValidHit) {
-                break;
-            }
-        }
-        if (ValidHit) {
-            return Vector3D(0, 0, 0);
-        }
         double angle = hit.normal.dot(lightDirection);
 
         double shadowIntensity = 1.0;

@@ -21,50 +21,38 @@ namespace RayTracer::Lights
         const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
-        Vector3D lightDir = _position - hit.point;
-        double distance = lightDir.length();
-        lightDir.normalize();
-        double angle = hit.normal.dot(lightDir);
-
-        Vector3D shadowIntensity = computeShadowIntensity(color, ray, hit, primitives);
-
-        return shadowIntensity;
-    }
-
-    Vector3D PointLight::computeShadowIntensity(
-        Vector3D color,
-        const Ray &ray,
-        const RayHit &hit,
-        const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
-    ) const
-    {
         static constexpr double kShadowBias = 1e-5;
-        Vector3D lightDir = _position - hit.point;
-        double distance = lightDir.length();
-        lightDir.normalize();
-        double angle = hit.normal.dot(lightDir);
 
-        Ray shadowRay(hit.point + hit.normal * kShadowBias, lightDir);
-        RayHit tmp;
-        tmp.distance = std::numeric_limits<double>::max();
-        for (Primitives::IPrimitive *primitive: primitives) {
-            if (primitive == hit.primitive)
-                continue;
-            bool hit = primitive->hit(shadowRay, tmp);
-            if (hit && tmp.distance > 0 && tmp.distance < distance) {
-                return Vector3D(0, 0, 0);
-            }
-        }
+        // Compute direction from hit point to the light position
+        Vector3D lightDirection = (_origin - hit.point);
+        lightDirection.normalize();
 
-        Vector3D newColor = color * _color * (_intensity * 0.01);
+        // Calculate angle between light direction and surface normal
+        double angle = hit.normal.dot(lightDirection);
+
+        // Compute distance from hit point to light position
+        Vector3D dist = (_origin - hit.point);
+        double distanceToLight = dist.length();
+
+        // Compute shadow intensity
+        double shadowIntensity = 1.0;
+
+        // Calculate attenuation based on distance (inverse square law)
+        double attenuation = 1.0 / (1.0 + _attenuation * distanceToLight + _attenuation * _attenuation * distanceToLight * distanceToLight);
+
+        // Compute light intensity taking into account attenuation
+        double lightIntensity = _intensity * attenuation * 0.01;
+
+        // Compute diffuse color
+        Vector3D newColor = color * _color;
         newColor.clamp(0, 255);
 
-        double diffuseIntensity = std::max(0.0, angle);
+        double diffuseIntensity = std::max(0.0, angle) * shadowIntensity;
         Vector3D diffuseColor = newColor * diffuseIntensity;
 
-        return diffuseColor;
-    }
+        return diffuseColor * lightIntensity;
 
+    }
 
     extern "C" std::unique_ptr<ILight> getEntryPoint()
     {
