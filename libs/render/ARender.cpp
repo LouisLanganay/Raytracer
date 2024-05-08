@@ -152,6 +152,7 @@ namespace RayTracer::Render {
         Vector3D color(0, 0, 0);
         RayTracer::Materials::Scatter scatter;
         Vector3D finalColor(0, 0, 0);
+        Ray ShadowRay;
 
         tmp.distance = std::numeric_limits<double>::max();
         rayHit.distance = std::numeric_limits<double>::max();
@@ -169,16 +170,28 @@ namespace RayTracer::Render {
             return Vector3D(0, 0, 0);
         std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
         if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
-            // TODO: Implement reflection and refraction
             color = material->getColor(ray, rayHit);
         } else {
             color = material->getColor(ray, rayHit);
         }
         color.clamp(0, 255);
         for (const auto &light: scene.getLights()) {
-            finalColor += light->computeLights(color, ray, rayHit, scene.getPrimitives());
+            Vector3D lightColor = light->computeLights(color, ray, rayHit, scene.getPrimitives());
+            if (lightColor.length() > 0) {
+                ShadowRay._origin = rayHit.point;
+                ShadowRay._direction = light->getPosition() - rayHit.point;
+                ShadowRay._direction.normalize();
+                for (Primitives::IPrimitive *primitive: scene.getPrimitives()) {
+                    if (primitive == rayHit.primitive)
+                        continue;
+                    if (primitive->hit(ShadowRay, tmp) && tmp.distance > 0 && tmp.distance < ShadowRay._direction.length()) {
+                        lightColor = Vector3D(0, 0, 0);
+                        break;
+                    }
+                }
+            }
+            finalColor += lightColor;
         }
-        finalColor.clamp(0, 255);
         return finalColor;
     }
 
