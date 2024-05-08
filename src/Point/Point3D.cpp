@@ -6,6 +6,7 @@
 */
 
 #include "Point3D.hpp"
+#include "../Vector/Vector3D.hpp"
 
 Point3D::Point3D(
     double x,
@@ -22,13 +23,27 @@ Point3D Point3D::operator+(const Vector3D& vec) const
     return Point3D(_x + vec._x, _y + vec._y, _z + vec._z);
 }
 
-Vector3D Point3D::operator-(const Point3D& other) const {
-    return Vector3D(_x - other._x, _y - other._y, _z - other._z);
-}
-
 Point3D Point3D::operator-(const Vector3D& vec) const
 {
     return Point3D(_x - vec._x, _y - vec._y, _z - vec._z);
+}
+
+Point3D Point3D::operator-(const Point3D& other) const
+{
+    return Point3D(_x - other._x, _y - other._y, _z - other._z);
+}
+
+Point3D& Point3D::operator=(const Point3D& other)
+{
+    _x = other._x;
+    _y = other._y;
+    _z = other._z;
+    return *this;
+}
+
+Vector3D Point3D::operator=(const Point3D& other) const
+{
+    return Vector3D(_x - other._x, _y - other._y, _z - other._z);
 }
 
 Point3D& Point3D::operator+=(const Vector3D& vec)
