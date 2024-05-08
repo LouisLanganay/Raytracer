@@ -7,6 +7,7 @@
 
 #include "Point3D.hpp"
 #include "../Vector/Vector3D.hpp"
+#include <cmath>
 
 Point3D::Point3D(
     double x,
@@ -54,3 +55,7 @@ Point3D& Point3D::operator+=(const Vector3D& vec)
     return *this;
 }
 
+double Point3D::length() const
+{
+    return sqrt(_x * _x + _y * _y + _z * _z);
+}
