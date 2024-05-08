@@ -9,7 +9,6 @@
 #define PNGRENDER_HPP_
 
 #include "../ARender.hpp"
-#include "../../../src/Camera/Camera.hpp"
 #include <mutex>
 
 namespace RayTracer::Render {
