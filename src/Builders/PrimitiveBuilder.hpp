@@ -62,7 +62,7 @@ namespace RayTracer::Builders {
             PrimitiveBuilder& set(const std::string &key, const libconfig::Setting &setting)
             {
                 if (key == "axis") {
-                    std::string arg = setting["axis"];
+                    std::string arg = setting;
                     if (arg == "Z")
                         _primitive->setAxis(RayTracer::Primitives::Axis::Z);
                     else if (arg == "Y")

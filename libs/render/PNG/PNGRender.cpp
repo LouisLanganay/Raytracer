@@ -36,13 +36,11 @@ namespace RayTracer::Render {
                     std::lock_guard<std::mutex> lock(_mutex);
                     _image[y].push_back(color / (samplesPerPixel * samplesPerPixel));
                     _pixelsRendered++;
-                    _mutex.unlock();
                 }
             }
             {
                 std::lock_guard<std::mutex> lock(_mutex);
                 updateProgress(_pixelsRendered, width * height, "Rendering");
-                _mutex.unlock();
             }
         }
     }
