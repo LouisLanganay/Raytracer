@@ -21,12 +21,14 @@ namespace RayTracer::Lights {
             void setOrigin(double x, double y, double z) override;
             void setColor(double x, double y, double z) override;
             void setIntensity(double intensity) override;
+            void setAttenuation(double attenuation) override;
             void setPosition(double x, double y, double z) override;
             void setDirection(double x, double y, double z) override;
 
             std::string getType() const override;
             Point3D getOrigin() const override;
             Vector3D getColor() const override;
+            double getAttenuation() const override;
             Point3D getPosition() const override;
             double getIntensity() const override;
             Vector3D getDirection() const override;
@@ -42,6 +44,7 @@ namespace RayTracer::Lights {
             Point3D _origin;
             Vector3D _color;
             Point3D _position;
+            double _attenuation;
             double _intensity;
             Vector3D _direction;
         private:
