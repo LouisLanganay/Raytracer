@@ -11,6 +11,7 @@
 #include "IRender.hpp"
 #include "../../src/Camera/Camera.hpp"
 #include "../lights/DirectionalLight/DirectionalLight.hpp"
+#include "../lights/PointLight/PointLight.hpp"
 #include "../lights/ALight.hpp"
 #include <memory>
 
