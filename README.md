@@ -39,5 +39,5 @@ USAGE: ./raytracer <SCENE_FILE>
 Project members:
 - [Valentin P.](https://github.com/ValentinPeron)
 - [Guillaume B.](https://github.com/Gaulaume)
-- [Louis L.](https://github.com/LouisLanganay)
+- [Louis L.](https://github.com/LouisLanganay)[![wakatime](https://wakatime.com/badge/user/3372edb3-08ff-4829-807b-29bbe42cf52b/project/018ee100-ab28-4c72-bdb5-9691a4a1faa2.svg)](https://wakatime.com/badge/user/3372edb3-08ff-4829-807b-29bbe42cf52b/project/018ee100-ab28-4c72-bdb5-9691a4a1faa2)
 - [Augustin B.]()
