@@ -10,8 +10,9 @@
 #include "../../../src/Loader/LibLoader.hpp"
 #include <memory>
 #include <cmath>
-#include <Vector3D.hpp>
+#include <string.h>
 
+#define M_PI 3.14159265358979323846
 namespace RayTracer::Primitives {
     Plane::Plane()
     {
@@ -23,27 +24,38 @@ namespace RayTracer::Primitives {
 
     bool Plane::hit(const Ray& ray, RayHit& hit)
     {
-        const double EPSILON = 1e-6;
-        hit.normal._x = ray._origin._x * ray._direction._x;
-        hit.normal._y = ray._origin._y * ray._direction._y;
-        hit.normal._z = ray._origin._z * ray._direction._z;
+        _center = getOrigin();
 
+        Vector3D direction;
+        if (X == getAxis())
+            direction = {1, 0, 0};
+        else if (Y == getAxis())
+            direction = {0, 1, 0};
+        else if (Z == getAxis())
+            direction = {0, 0, 1};
+        else
+            return false;
 
+        Vector3D normal = direction.getNormalized();
+        double produitScalaire = normal.dot(ray.getDirection());
+        if (std::abs(produitScalaire) > 0.0001) {
+            // hit.distance = la distance rayon a laquelle il touche la forme par rapport a l'origine du rayon
+            //std::cout << "Center = " << _center._x  << " " << _center._y << " " << _center._z  << std::endl;
+            //std::cout << "Origin = " << ray.getOrigin()._x << " " << ray.getOrigin()._y << " " << ray.getOrigin()._z << std::endl;
+            //std::cout << "Normal = " << normal._x << " " << normal._y << " " << normal._z   << std::endl;
+            //std::cout << "Result = " << (_center - ray.getOrigin()).dot(normal) << std::endl;
+            hit.distance = (_center - ray.getOrigin()).dot(normal) / produitScalaire;
+            if (hit.distance >= 0) {
+                //std::cout << "HIT  " << hit.distance << std::endl;
+                hit.point = ray.getPointAt(hit.distance);
+                hit.normal = normal;
+                return true;
+            }
+        }
 
-        double denominator = ray.getDirection().dot(hit.normal);
-        if (fabs(denominator) < EPSILON)
-            return false; // Ray is parallel to the plane
-
-        double t = (hit.point - ray.getOrigin()).dot(hit.normal) / denominator;
-
-        if (t <= EPSILON)
-            return false; // Intersection behind the ray origin
-
-        hit.distance = t;
-        hit.point = ray.getPointAt(t);
-
-        return true;
+        return false;
     }
+
 
     extern "C" std::unique_ptr<IPrimitive> getEntryPoint()
     {

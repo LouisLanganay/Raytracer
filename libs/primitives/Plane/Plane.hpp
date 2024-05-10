@@ -16,7 +16,6 @@ namespace RayTracer::Primitives {
         public:
             Plane();
             ~Plane();
-
             bool hit(const Ray& ray, RayHit& hit) override;
 
         protected:

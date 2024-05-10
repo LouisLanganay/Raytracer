@@ -77,6 +77,7 @@ plugins:
 	@ make -s -C ./libs/lights/PointLight
 	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
+	@ make -s -C ./libs/primitives/Plane
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
@@ -95,6 +96,7 @@ clean:
 	@ make clean -s -C ./libs/lights/PointLight
 	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
+	@ make clean -s -C ./libs/primitives/Plane
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/render/PNG
 	@ make clean -s -C ./libs/materials/Flat
@@ -123,6 +125,7 @@ fclean: clean
 	@ make fclean -s -C ./libs/lights/PointLight
 	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
+	@ make fclean -s -C ./libs/primitives/Plane
 	@ make fclean -s -C ./libs/render/PPM
 	@ make fclean -s -C ./libs/render/PNG
 	@ make fclean -s -C ./libs/materials/Flat
@@ -135,6 +138,7 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Plane${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"
