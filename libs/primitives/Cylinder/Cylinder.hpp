@@ -17,10 +17,11 @@ namespace RayTracer::Primitives {
             ~Cylinder();
 
             bool hit(const Ray& ray, RayHit& hit) override;
-
         protected:
         private:
             Point3D _center;
+            Matrix _transformation;
+            bool _isCenterSet = false;
     };
 }
 

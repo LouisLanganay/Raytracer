@@ -79,6 +79,7 @@ plugins:
 	@ make -s -C ./libs/primitives/Sphere
 	@ make -s -C ./libs/primitives/Cylinder
 	@ make -s -C ./libs/primitives/Plane
+	@ make -s -C ./libs/primitives/Cone
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
@@ -98,6 +99,7 @@ clean:
 	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
 	@ make clean -s -C ./libs/primitives/Cylinder
+	@ make clean -s -C ./libs/primitives/Cone
 	@ make clean -s -C ./libs/primitives/Plane
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/render/PNG
@@ -109,10 +111,13 @@ clean:
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    vgcore.*${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    coding-style-reports.log${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/DirectionalLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbientLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Cylinder${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Cone${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Plane${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Flat${_END}"
@@ -127,6 +132,7 @@ fclean: clean
 	@ make fclean -s -C ./libs/lights/PointLight
 	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
+	@ make fclean -s -C ./libs/primitives/Cone
 	@ make fclean -s -C ./libs/primitives/Cylinder
 	@ make fclean -s -C ./libs/primitives/Plane
 	@ make fclean -s -C ./libs/render/PPM
@@ -141,6 +147,9 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Cone${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Cylinder${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Plane${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"

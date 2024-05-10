@@ -2,24 +2,24 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** Cylinder
+** Cone
 */
 
-#include "Cylinder.hpp"
+#include "Cone.hpp"
 #include <cmath>
 #include "../../../src/Loader/LibLoader.hpp"
 #include <memory>
 
 namespace RayTracer::Primitives {
-    Cylinder::Cylinder()
+    Cone::Cone()
     {
     }
 
-    Cylinder::~Cylinder()
+    Cone::~Cone()
     {
     }
 
-    bool Cylinder::hit(const Ray& ray, RayHit& hit)
+    bool Cone::hit(const Ray& ray, RayHit& hit)
     {
         if (!_isCenterSet) {
             Matrix transformation = getTransformationMatrix();
@@ -31,9 +31,10 @@ namespace RayTracer::Primitives {
         }
         Vector3D oc = ray.getOrigin() - _center;
 
-        double a = ray.getDirection()._x * ray.getDirection()._x + ray.getDirection()._z * ray.getDirection()._z;
-        double b = 2 * (oc._x * ray.getDirection()._x + oc._z * ray.getDirection()._z);
-        double c = oc._x * oc._x + oc._z * oc._z - getRadius() * getRadius();
+        double k = getRadius() / getHeight();
+        double a = ray.getDirection()._x * ray.getDirection()._x + ray.getDirection()._z * ray.getDirection()._z - k * k * ray.getDirection()._y * ray.getDirection()._y;
+        double b = 2 * (oc._x * ray.getDirection()._x + oc._z * ray.getDirection()._z - k * k * oc._y * ray.getDirection()._y);
+        double c = oc._x * oc._x + oc._z * oc._z - k * k * oc._y * oc._y;
         double delta = b * b - 4 * a * c;
 
         if (delta < 0)
@@ -52,14 +53,14 @@ namespace RayTracer::Primitives {
 
         hit.distance = t;
         hit.point = ray.getPointAt(hit.distance);
-        hit.normal = Vector3D(hit.point._x - _center._x, 0, hit.point._z - _center._z);
+        hit.normal = Vector3D(hit.point._x - _center._x, k * k * (hit.point._y - _center._y), hit.point._z - _center._z);
         hit.normal.normalize();
         return true;
     }
 
     extern "C" std::unique_ptr<IPrimitive> getEntryPoint()
     {
-        return std::make_unique<Cylinder>();
+        return std::make_unique<Cone>();
     }
 
     extern "C" std::unique_ptr<PluginType> getTypePoint()
@@ -69,6 +70,6 @@ namespace RayTracer::Primitives {
 
     extern "C" std::unique_ptr<std::string> getNamePoint()
     {
-        return std::make_unique<std::string>("cylinder");
+        return std::make_unique<std::string>("cone");
     }
 }

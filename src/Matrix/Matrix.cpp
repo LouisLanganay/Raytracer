@@ -177,12 +177,7 @@ namespace RayTracer {
         if (this != &other) {
             _rows = other._rows;
             _cols = other._cols;
-
-            for (int i = 0; i < _rows; i++) {
-                for (int j = 0; j < _cols; j++) {
-                    _data[i][j] = other._data[i][j];
-                }
-            }
+            _data = other._data;
         }
         return *this;
     }
@@ -199,7 +194,7 @@ namespace RayTracer {
 
     Vector3D Matrix::operator*(const Vector3D &vector) const
     {
-        if (_cols != 3)
+        if (_cols < 3)
             throw std::invalid_argument("Matrix error");
         Vector3D result;
         result._x = _data[0][0] * vector._x + _data[0][1] * vector._y + _data[0][2] * vector._z;
@@ -224,5 +219,45 @@ namespace RayTracer {
         if (row < 0 || row >= _rows || col < 0 || col >= _cols)
             throw std::invalid_argument("Matrix error");
         return _data[row][col];
+    }
+
+    Matrix Matrix::inverse()
+    {
+        if (_rows != _cols)
+            throw std::invalid_argument("Matrix error");
+        Matrix result(_rows, _cols, 0.0);
+        for (int i = 0; i < _rows; i++) {
+            result._data[i][i] = 1;
+        }
+        for (int i = 0; i < _rows; i++) {
+            double pivot = _data[i][i];
+            for (int j = 0; j < _cols; j++) {
+                _data[i][j] /= pivot;
+                result._data[i][j] /= pivot;
+            }
+            for (int k = 0; k < _rows; k++) {
+                if (k != i) {
+                    double factor = _data[k][i];
+                    for (int j = 0; j < _cols; j++) {
+                        _data[k][j] -= factor * _data[i][j];
+                        result._data[k][j] -= factor * result._data[i][j];
+                    }
+                }
+            }
+        }
+        _data = std::move(result._data);
+        return *this;
+    }
+
+    Matrix Matrix::transpose()
+    {
+        Matrix result(_cols, _rows);
+        for (int i = 0; i < _rows; i++) {
+            for (int j = 0; j < _cols; j++) {
+                result._data[j][i] = _data[i][j];
+            }
+        }
+        _data = std::move(result._data);
+        return *this;
     }
 }

@@ -21,33 +21,47 @@ namespace RayTracer::Primitives {
 
     bool Plane::hit(const Ray &ray, RayHit &hit)
     {
-        Vector3D oc = ray.getOrigin() - _center;
+        constexpr double EPSILON = 0.000001;
 
-
-        float a = ray.getDirection()._x * ray.getDirection()._x + ray.getDirection()._z * ray.getDirection()._z;
-        float b = 2 * (oc._x * ray.getDirection()._x + oc._z * ray.getDirection()._z);
-        float c = oc._x * oc._x + oc._z * oc._z - _radius * _radius;
-        float delta = b * b - 4 * a * c;
-
-        if (delta < 0)
+        if (!_isNormalSet) {
+            Axis axis = getAxis();
+            switch (axis)
+            {
+            case Axis::X:
+                _normal = Vector3D(1, 0, 0);
+                break;
+            case Axis::Y:
+                _normal = Vector3D(0, 1, 0);
+                break;
+            case Axis::Z:
+                _normal = Vector3D(0, 0, 1);
+                break;
+            default:
+                throw std::runtime_error("Invalid axis");
+                break;
+            }
+            Matrix transformation = getTransformationMatrix();
+            _center = getOrigin();
+            _center._x += transformation(0, 3);
+            _center._y += transformation(1, 3);
+            _center._z += transformation(2, 3);
+            _center = _center;
+            _isNormalSet = true;
+        }
+        double denominator = _normal.dot(ray.getDirection());
+        if (fabs(denominator) < EPSILON)
             return false;
 
-        float t1 = (-b - sqrt(delta)) / (2 * a);
-        float t2 = (-b + sqrt(delta)) / (2 * a);
-        
-        float t_hit = std::min(t1, t2);
-        if (t_hit > 0) {
-            hit.point = ray.getPointAt(t_hit);
-            if (hit.point._y >= _center._y && hit.point._y <= _center._y + _height) {
-                hit.distance = t_hit;
-                // Remove the next line as hit.point is already assigned to hit_point
-                // hit.point = hit_point;
-                hit.normal = Vector3D(hit.point._x - _center._x, 0, hit.point._z - _center._z);
-                hit.normal.normalize();
-                return true;
-            }
-        }
-        return false;
+        double t = (_center - ray.getOrigin()).dot(_normal) / denominator;
+
+        if (t < 0)
+            return false;
+
+        hit.distance = t;
+        hit.point = ray.getPointAt(hit.distance);
+        hit.normal = Vector3D(_normal);
+        hit.normal.normalize();
+        return true;
     }
 
     extern "C" std::unique_ptr<IPrimitive> getEntryPoint()

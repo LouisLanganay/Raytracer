@@ -20,12 +20,17 @@ class Point3D {
         Point3D(const Point3D& other) = default;
         Point3D(Point3D&& other) = default;
 
+        Point3D(const Vector3D& vec);
+
+        Point3D operator+(Point3D& other) const;
+        Point3D operator+(const Point3D& other) const;
         Point3D& operator=(const Point3D& other) = default;
         Point3D& operator=(Point3D&& other) = default;
         Point3D operator+(const Vector3D& vec) const;
         Vector3D operator-(const Point3D& other) const;
         Point3D operator-(const Vector3D& vec) const;
         Point3D& operator+=(const Vector3D& vec);
+
 
         double _x;
         double _y;

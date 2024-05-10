@@ -32,6 +32,8 @@ USAGE: ./raytracer <SCENE_FILE>
     SCENE_FILE: scene configuration
 ```
 
+![RaytracerImagePreview](images/Scene1.png)
+
 ## Contributions
 
 Project members:

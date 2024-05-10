@@ -48,6 +48,9 @@ namespace RayTracer {
             Matrix &operator=(const Matrix &other);
             Matrix &operator=(Matrix &&other);
 
+            Matrix inverse();
+            Matrix transpose();
+
         protected:
             std::vector<std::vector<double>> _data;
             int _rows;
