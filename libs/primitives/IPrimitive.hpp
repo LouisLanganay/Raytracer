@@ -14,6 +14,7 @@
 #include <string>
 #include "../materials/IMaterial.hpp"
 #include "../../src/Matrix/Matrix.hpp"
+#include "../../src/Interval/Interval.hpp"
 #include <memory>
 
 namespace RayTracer::Primitives {
@@ -50,7 +51,7 @@ namespace RayTracer::Primitives {
             virtual void setScale(const Vector3D &scale) = 0;
             virtual Matrix getTransformationMatrix() const = 0;
 
-            virtual bool hit(const Ray& ray, RayHit& hit) = 0;
+            virtual bool hit(const Ray& ray, Interval interval, HitRecord& rec) = 0;
 
         protected:
         private:
