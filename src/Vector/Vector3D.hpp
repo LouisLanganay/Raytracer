@@ -34,12 +34,28 @@ class Vector3D {
         Vector3D operator/(double scalar) const;
         Vector3D& operator/=(double scalar);
         Vector3D operator*(const Vector3D& other) const;
-        Vector3D operator-() const;
 
+        friend Vector3D operator*(double scalar, const Vector3D& vec);    
+        Vector3D operator-() const;
+        
+
+        Vector3D unit_vector();
+        static Vector3D unit_vector(const Vector3D& vec);
+
+        static double random_double();
+        static double random_double(double min, double max);
+        static Vector3D random();
+        static Vector3D random(double min, double max);
+        static Vector3D random_unit_vector();
+        bool near_zero() const;
         void normalize();
         Vector3D getNormalized() const;
         Vector3D cross(const Vector3D& other) const;
         void clamp(double min, double max);
+
+        double getX() const;
+        double getY() const;
+        double getZ() const;
 
         double _x;
         double _y;
