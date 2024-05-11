@@ -27,6 +27,8 @@ class Ray {
         Point3D getOrigin() const;
         Vector3D getDirection() const;
 
+        static double dot(const Vector3D &u, const Vector3D &v);
+
         Point3D _origin;
         Vector3D _direction;
     protected:
