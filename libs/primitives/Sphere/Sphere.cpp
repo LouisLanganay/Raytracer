@@ -18,42 +18,27 @@ namespace RayTracer::Primitives {
     {
     }
 
-    bool Sphere::hit(const Ray& ray, RayHit& hit)
+    bool Sphere::hit(const Ray& r, Interval interval, HitRecord& rec)
     {
-        if (!_isCenterSet) {
-            Matrix transformation = getTransformationMatrix();
-            _center = getOrigin();
-            _center._x += transformation(0, 3);
-            _center._y += transformation(1, 3);
-            _center._z += transformation(2, 3);
-            _isCenterSet = true;
-        }
-        Vector3D oc = ray.getOrigin() - _center;
-        double a = ray.getDirection().lengthSquared();
-        double b = oc.dot(ray.getDirection());
+        Vector3D oc = r.getOrigin() - _center;
+        double a = r.getDirection().lengthSquared();
+        double b = Ray::dot(oc, r.getDirection());
         double c = oc.lengthSquared() - _radius * _radius;
         double discriminant = b * b - a * c;
-
         if (discriminant < 0)
             return false;
-        if (discriminant == 0) {
-            hit.distance = -b / a;
-            hit.point = ray.getPointAt(hit.distance);
-            hit.normal = Vector3D(hit.point - _center) / _radius;
-        } else {
-            auto temp = (-b - sqrt(discriminant)) / a;
-            if (temp > 0) {
-                hit.distance = temp;
-                hit.point = ray.getPointAt(hit.distance);
-                hit.normal = Vector3D(hit.point - _center) / _radius;
-            } else {
-                temp = (-b + sqrt(discriminant)) / a;
-                hit.distance = temp;
-                hit.point = ray.getPointAt(hit.distance);
-                hit.normal = Vector3D(hit.point - _center) / _radius;
-            }
+        double sqrtd = sqrt(discriminant);
+        double root = (-b - sqrtd) / a;
+        if (root < interval.min() || interval.max() < root) {
+            root = (-b + sqrtd) / a;
+            if (root < interval.min() || interval.max() < root)
+                return false;
         }
-        hit.normal.normalize();
+        rec.t = root;
+        rec.p = r.getPointAt(rec.t);
+        
+        Vector3D outward_normal = (rec.p - _center) / _radius;
+        rec.set_face_normal(r, outward_normal);
         return true;
     }
 
