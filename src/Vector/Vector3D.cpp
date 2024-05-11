@@ -45,6 +45,11 @@ Vector3D& Vector3D::operator+=(const Vector3D& other)
     return *this;
 }
 
+Vector3D Vector3D::operator+(const Point3D& point) const
+{
+    return Vector3D(_x + point._x, _y + point._y, _z + point._z);
+}
+
 Vector3D Vector3D::operator-(const Vector3D& other) const
 {
     return Vector3D(_x - other._x, _y - other._y, _z - other._z);

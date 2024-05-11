@@ -89,7 +89,6 @@ namespace RayTracer::Primitives {
 
     void APrimitive::setTranslation(const Vector3D &translation)
     {
-        printf("set translation\n");
         _translation(0, 3) = translation._x;
         _translation(1, 3) = translation._y;
         _translation(2, 3) = translation._z;

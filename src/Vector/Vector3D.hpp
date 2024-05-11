@@ -8,6 +8,8 @@
 #ifndef VECTOR3D_HPP_
 #define VECTOR3D_HPP_
 
+class Point3D;
+
 class Vector3D {
     public:
         Vector3D();
@@ -26,6 +28,7 @@ class Vector3D {
         double lengthSquared() const;
 
         Vector3D operator+(const Vector3D& other) const;
+        Vector3D operator+(const Point3D& point) const;
         Vector3D& operator+=(const Vector3D& other);
         Vector3D operator-(const Vector3D& other) const;
         Vector3D& operator-=(const Vector3D& other);
@@ -47,5 +50,7 @@ class Vector3D {
     protected:
     private:
 };
+
+#include "../Point/Point3D.hpp"
 
 #endif /* !VECTOR3D_HPP_ */
