@@ -42,12 +42,14 @@ namespace RayTracer::Render {
             int _maxDepth;
             int _samples;
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
+            void log(const std::string &message);
         private:
             std::string _message;
             RayTracer::Lights::DirectionalLight *_light;
             Vector3D randomInUnitSphere();
             double _lastProgress = -1.0;
             time_t _startTime;
+            std::size_t _seed;
     };
 
 }

@@ -20,6 +20,7 @@ VPATH 		+= ./src/Camera
 VPATH 		+= ./src/Point
 VPATH 		+= ./src/Ray
 VPATH 		+= ./src/Rectangle
+VPATH 		+= ./src/Matrix
 
 vpath %.cpp $(VPATH)
 
@@ -32,6 +33,7 @@ SRC 		+= Point3D.cpp
 SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
 SRC 		+= Rectangle3D.cpp
+SRC 		+= Matrix.cpp
 
 BUILD_DIR 	= build
 OBJ 		:= $(SRC:%.c=$(BUILD_DIR)/%.o)
@@ -75,9 +77,13 @@ plugins:
 	@ make -s -C ./libs/lights/PointLight
 	@ make -s -C ./libs/lights/AmbientLight
 	@ make -s -C ./libs/primitives/Sphere
+	@ make -s -C ./libs/primitives/Cylinder
+	@ make -s -C ./libs/primitives/Plane
+	@ make -s -C ./libs/primitives/Cone
 	@ make -s -C ./libs/render/PPM
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
+	@ make -s -C ./libs/materials/Mirror
 
 debug: CFLAGS += -g
 
@@ -92,22 +98,30 @@ clean:
 	@ make clean -s -C ./libs/lights/PointLight
 	@ make clean -s -C ./libs/lights/AmbientLight
 	@ make clean -s -C ./libs/primitives/Sphere
+	@ make clean -s -C ./libs/primitives/Cylinder
+	@ make clean -s -C ./libs/primitives/Cone
+	@ make clean -s -C ./libs/primitives/Plane
 	@ make clean -s -C ./libs/render/PPM
 	@ make clean -s -C ./libs/render/PNG
 	@ make clean -s -C ./libs/materials/Flat
+	@ make clean -s -C ./libs/materials/Mirror
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcov${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    vgcore.*${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    coding-style-reports.log${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(OBJ)${_END}"
-	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Shpere${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/DirectionalLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/lights/AmbientLight${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Cylinder${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Cone${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/primitives/Plane${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Flat${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make clean -s -C ./libs/materials/Mirror${_END}"
 
 fclean: clean
 	@ $(RM) -r $(BUILD_DIR)
@@ -118,9 +132,13 @@ fclean: clean
 	@ make fclean -s -C ./libs/lights/PointLight
 	@ make fclean -s -C ./libs/lights/AmbientLight
 	@ make fclean -s -C ./libs/primitives/Sphere
+	@ make fclean -s -C ./libs/primitives/Cone
+	@ make fclean -s -C ./libs/primitives/Cylinder
+	@ make fclean -s -C ./libs/primitives/Plane
 	@ make fclean -s -C ./libs/render/PPM
 	@ make fclean -s -C ./libs/render/PNG
 	@ make fclean -s -C ./libs/materials/Flat
+	@ make fclean -s -C ./libs/materials/Mirror
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
@@ -129,9 +147,13 @@ fclean: clean
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/PointLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/lights/AmbientLight${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Sphere${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Cone${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Cylinder${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/primitives/Plane${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PPM${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/render/PNG${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Flat${_END}"
+	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> make fclean -s -C ./libs/materials/Mirror${_END}"
 
 re: fclean all
 

@@ -30,7 +30,7 @@ class Vector3D {
 
         Vector3D operator==(const Vector3D& other) const;
         Vector3D operator+(const Vector3D& other) const;
-        Vector3D operator+(const Point3D& other) const;
+        Vector3D operator+(const Point3D& point) const;
         Vector3D& operator+=(const Vector3D& other);
         Vector3D operator-(const Vector3D& other) const;
         Vector3D operator-(const Point3D& other) const;
@@ -55,5 +55,7 @@ class Vector3D {
     protected:
     private:
 };
+
+#include "../Point/Point3D.hpp"
 
 #endif /* !VECTOR3D_HPP_ */

@@ -17,6 +17,10 @@ namespace RayTracer::Render {
     {
     }
 
+    PNGRender::~PNGRender()
+    {
+    }
+
     void PNGRender::renderTile(Scene& scene, int start, int end, int width, int height, int samplesPerPixel) {
         for (int y = start; y < end; ++y) {
             for (int x = 0; x < width; ++x) {
@@ -45,18 +49,25 @@ namespace RayTracer::Render {
         Camera camera = *scene.getCamera();
         int height = camera.getResolution()._y;
         int width = camera.getResolution()._x;
-        const int numThreads = std::thread::hardware_concurrency();
-        const int tileSize = height / numThreads;
         std::vector<std::thread> threads;
-        std::vector<int> threadProgress(numThreads, 0);
+        int numThreads = 1;
+        sf::Image image;
+        log("\033[1;31mStarting threads\033[0m");
+        for (std::size_t i = 1; i <= std::thread::hardware_concurrency(); i++) {
+            log("\033[33mStarting thread n°" + std::to_string(i) + "\033[0m");
+            if (height % i == 0)
+                numThreads = i;
+        }
+        const int tileSize = height / numThreads;
+        log("Number of threads: " + std::to_string(numThreads) + ", tile size: " + std::to_string(tileSize));
         int rowProgress = 0;
 
-        sf::Image image;
         image.create(width, height);
+        log("Creating image of size " + std::to_string(width) + "x" + std::to_string(height));
 
         _image.resize(height);
         for (int i = 0; i < numThreads; ++i)
-            threads.emplace_back(&PNGRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, 4);
+            threads.emplace_back(&PNGRender::renderTile, this, std::ref(scene), i * tileSize, (i + 1) * tileSize, width, height, _samples);
         for (auto& thread : threads)
             thread.join();
         for (int y = 0; y < height; ++y) {
@@ -71,6 +82,8 @@ namespace RayTracer::Render {
             rowProgress++;
             updateProgress(rowProgress, height, "Generating .png image");
         }
+        std::cout << std::endl;
+        log("Saving image to file " + _filename);
         image.saveToFile(_filename);
     }
 

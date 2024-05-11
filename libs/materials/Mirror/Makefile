@@ -7,23 +7,19 @@
 
 include ../../../Makefile_colors.mk
 
-LIB 		= lib_sphere.so
+LIB 		= lib_mirror.so
 
 VPATH 		:= ./src
 VPATH 		+= ../
-VPATH 		+= ../../../src/Point
 VPATH 		+= ../../../src/Vector
 VPATH 		+= ../../../src/Ray
-VPATH 		+= ../../../src/Matrix
 
 vpath %.cpp $(VPATH)
 
-SRC 		:= Sphere.cpp
-SRC 		+= APrimitive.cpp
-SRC 		+= Point3D.cpp
+SRC 		:= Mirror.cpp
+SRC 		+= AMaterial.cpp
 SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
-SRC 		+= Matrix.cpp
 
 CFLAGS 		= -Wall
 

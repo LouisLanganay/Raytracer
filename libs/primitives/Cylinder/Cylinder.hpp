@@ -2,27 +2,27 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** Sphere
+** Cylinder
 */
 
-#ifndef SPHERE_HPP_
-#define SPHERE_HPP_
+#ifndef CYLINDER_HPP_
+#define CYLINDER_HPP_
 
 #include "../APrimitive.hpp"
 
 namespace RayTracer::Primitives {
-    class Sphere : public APrimitive {
+    class Cylinder : public APrimitive {
         public:
-            Sphere();
-            ~Sphere();
+            Cylinder();
+            ~Cylinder();
 
             bool hit(const Ray& ray, RayHit& hit) override;
-
         protected:
         private:
             Point3D _center;
+            Matrix _transformation;
             bool _isCenterSet = false;
     };
 }
 
-#endif /* !SPHERE_HPP_ */
+#endif /* !CYLINDER_HPP_ */

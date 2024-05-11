@@ -8,6 +8,10 @@
 #include "APrimitive.hpp"
 
 namespace RayTracer::Primitives {
+    APrimitive::APrimitive () : _translation(4, 4, 1), _rotation(4, 4, 1), _scale(4, 4, 1)
+    {
+    }
+
     void APrimitive::setType(const std::string &type)
     {
         _type = type;
@@ -16,11 +20,6 @@ namespace RayTracer::Primitives {
     void APrimitive::setOrigin(double x, double y, double z)
     {
         _origin = Point3D(x, y, z);
-    }
-
-    void APrimitive::setRotation(double x, double y, double z)
-    {
-        _rotation = Point3D(x, y, z);
     }
 
     void APrimitive::setRadius(double radius)
@@ -43,7 +42,7 @@ namespace RayTracer::Primitives {
         return _origin;
     }
 
-    Point3D APrimitive::getRotation() const
+    Matrix APrimitive::getRotation() const
     {
         return _rotation;
     }
@@ -86,5 +85,37 @@ namespace RayTracer::Primitives {
     void APrimitive::setWidth(double width)
     {
         _width = width;
+    }
+
+    void APrimitive::setTranslation(const Vector3D &translation)
+    {
+        _translation(0, 3) = translation._x;
+        _translation(1, 3) = translation._y;
+        _translation(2, 3) = translation._z;
+    }
+
+    void APrimitive::setRotation(const Vector3D &rotation)
+    {
+        _rotation(0, 0) = cos(rotation._y) * cos(rotation._z);
+        _rotation(0, 1) = -cos(rotation._y) * sin(rotation._z);
+        _rotation(0, 2) = sin(rotation._y);
+        _rotation(1, 0) = cos(rotation._x) * sin(rotation._z) + sin(rotation._x) * sin(rotation._y) * cos(rotation._z);
+        _rotation(1, 1) = cos(rotation._x) * cos(rotation._z) - sin(rotation._x) * sin(rotation._y) * sin(rotation._z);
+        _rotation(1, 2) = -sin(rotation._x) * cos(rotation._y);
+        _rotation(2, 0) = sin(rotation._x) * sin(rotation._z) - cos(rotation._x) * sin(rotation._y) * cos(rotation._z);
+        _rotation(2, 1) = sin(rotation._x) * cos(rotation._z) + cos(rotation._x) * sin(rotation._y) * sin(rotation._z);
+        _rotation(2, 2) = cos(rotation._x) * cos(rotation._y);
+    }
+
+    void APrimitive::setScale(const Vector3D &scale)
+    {
+        _scale(0, 0) = scale._x;
+        _scale(1, 1) = scale._y;
+        _scale(2, 2) = scale._z;
+    }
+
+    Matrix APrimitive::getTransformationMatrix() const
+    {
+        return _translation * _rotation * _scale;
     }
 }

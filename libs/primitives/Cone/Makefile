@@ -7,7 +7,7 @@
 
 include ../../../Makefile_colors.mk
 
-LIB 		= lib_sphere.so
+LIB 		= lib_cone.so
 
 VPATH 		:= ./src
 VPATH 		+= ../
@@ -18,7 +18,7 @@ VPATH 		+= ../../../src/Matrix
 
 vpath %.cpp $(VPATH)
 
-SRC 		:= Sphere.cpp
+SRC 		:= Cone.cpp
 SRC 		+= APrimitive.cpp
 SRC 		+= Point3D.cpp
 SRC 		+= Vector3D.cpp

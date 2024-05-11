@@ -2,27 +2,28 @@
 ** EPITECH PROJECT, 2024
 ** Raytracer
 ** File description:
-** Sphere
+** Plane
 */
 
-#ifndef SPHERE_HPP_
-#define SPHERE_HPP_
+#ifndef PLANE_HPP_
+#define PLANE_HPP_
 
 #include "../APrimitive.hpp"
 
 namespace RayTracer::Primitives {
-    class Sphere : public APrimitive {
+    class Plane : public APrimitive {
         public:
-            Sphere();
-            ~Sphere();
+            Plane();
+            ~Plane();
 
             bool hit(const Ray& ray, RayHit& hit) override;
 
         protected:
         private:
             Point3D _center;
-            bool _isCenterSet = false;
+            Vector3D _normal;
+            bool _isNormalSet = false;
     };
 }
 
-#endif /* !SPHERE_HPP_ */
+#endif /* !PLANE_HPP_ */
