@@ -25,12 +25,9 @@ namespace RayTracer::Render {
         for (int y = start; y < end; ++y) {
             for (int x = 0; x < width; ++x) {
                 Vector3D color(0, 0, 0);
-                for (std::size_t k = 0; k < samplesPerPixel; k++) {
-                    for (std::size_t l = 0; l < samplesPerPixel; l++) {
-                        double u = (x + (k / static_cast<double>(samplesPerPixel))) / width;
-                        double v = 1.0 - (y + (l / static_cast<double>(samplesPerPixel))) / height;
-                        color += castRay(u, v, scene, 4);
-                    }
+                for (int sample = 0; sample < samplesPerPixel; ++sample) {
+                    Ray ray = scene.get_ray(x, y);
+                    color += ray_Color(ray, _maxDepth, scene);
                 }
                 {
                     std::lock_guard<std::mutex> lock(_mutex);
@@ -86,8 +83,6 @@ namespace RayTracer::Render {
         log("Saving image to file " + _filename);
         image.saveToFile(_filename);
     }
-
-
 
     extern "C" std::unique_ptr<IRender> getEntryPoint()
     {
