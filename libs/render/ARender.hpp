@@ -36,6 +36,8 @@ namespace RayTracer::Render {
             int getMaxDepth() const override;
             int getSamples() const override;
 
+            Vector3D ray_Color(const Ray &ray, int depth, const Scene &scene);
+
         protected:
             std::string _filename;
             int _maxDepth;
