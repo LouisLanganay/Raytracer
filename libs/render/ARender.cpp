@@ -11,6 +11,8 @@
 #include <ctime>
 #include <chrono>
 
+typedef Vector3D Color;
+
 namespace RayTracer::Render {
 
     static const Vector3D randomUnitSphereVectorLookup[] = {
@@ -143,57 +145,62 @@ namespace RayTracer::Render {
         return castRay(ray, scene, depth);
     }
 
-    Vector3D ARender::castRay(
-        const Ray &ray,
-        const RayTracer::Scene &scene,
-        std::size_t depth,
-        Primitives::IPrimitive *lastPrimitive
-    ) {
-        Primitives::IPrimitive *closest = nullptr;
-        RayHit tmp;
-        RayHit rayHit;
-        Vector3D color(0, 0, 0);
-        RayTracer::Materials::Scatter scatter;
-        Vector3D finalColor(0, 0, 0);
+    // Vector3D ARender::ray_Color
 
-        tmp.distance = std::numeric_limits<double>::max();
-        rayHit.distance = std::numeric_limits<double>::max();
-        for (Primitives::IPrimitive *primitive: scene.getPrimitives()) {
-            if (primitive == lastPrimitive)
-                continue;
-            bool hit = primitive->hit(ray, tmp);
-            if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < rayHit.distance)) {
-                rayHit = tmp;
-                rayHit.primitive = primitive;
-                closest = primitive;
-            }
-        }
-        if (!closest)
-            return Vector3D(0, 0, 0);
-        std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
-        if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
-            //Vector3D reflectedColor;
-            //for (std::size_t i = 0; i < 3; i++) {
-            //    Point3D reflectedOrigin = scatter.reflected.getOrigin() + scatter.reflected.getDirection() * 0.001;
-            //    reflectedOrigin += randomInUnitSphere() * 0.1;
-            //    Ray reflectedRay(reflectedOrigin, scatter.reflected.getDirection());
-            //    reflectedColor += castRay(scatter.reflected, scene, depth - 1, closest) * scatter.reflectionIndex;
-            //}
-            //reflectedColor /= 3;
-            //reflectedColor.clamp(0, 255);
-            //color = material->getColor(ray, rayHit) * scatter.attenuation * (1 - scatter.reflectionIndex);
-            //color += reflectedColor * scatter.reflectionIndex * scatter.attenuation;
-            color = material->getColor(ray, rayHit);
-        } else {
-            color = material->getColor(ray, rayHit);
-        }
-        color.clamp(0, 255);
-        for (const auto &light: scene.getLights()) {
-            finalColor += light->computeLights(color, ray, rayHit, scene.getPrimitives());
-        }
-        finalColor.clamp(0, 255);
-        return finalColor;
-    }
+    // Vector3D ARender::castRay(
+    //     const Ray &ray,
+    //     const RayTracer::Scene &scene,
+    //     std::size_t depth,
+    //     Primitives::IPrimitive *lastPrimitive
+    // ) {
+    //     Primitives::IPrimitive *closest = nullptr;
+    //     RayHit tmp;
+    //     RayHit rayHit;
+    //     Vector3D color(0, 0, 0);
+    //     RayTracer::Materials::Scatter scatter;
+    //     Vector3D finalColor(0, 0, 0);
+
+    //     tmp.distance = std::numeric_limits<double>::max();
+    //     rayHit.distance = std::numeric_limits<double>::max();
+    //     for (Primitives::IPrimitive *primitive: scene.getPrimitives()) {
+    //         if (primitive == lastPrimitive)
+    //             continue;
+    //         bool hit = primitive->hit(ray, tmp);
+    //         if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < rayHit.distance)) {
+    //             rayHit = tmp;
+    //             rayHit.primitive = primitive;
+    //             closest = primitive;
+    //         }
+    //     }
+    //     if (!closest)
+    //         return Vector3D(0, 0, 0);
+    //     std::shared_ptr<RayTracer::Materials::IMaterial> material = closest->getMaterial();
+    //     if (depth > 0 && material->scatter(ray, rayHit, scatter)) {
+    //         //Vector3D reflectedColor;
+    //         //for (std::size_t i = 0; i < 3; i++) {
+    //         //    Point3D reflectedOrigin = scatter.reflected.getOrigin() + scatter.reflected.getDirection() * 0.001;
+    //         //    reflectedOrigin += randomInUnitSphere() * 0.1;
+    //         //    Ray reflectedRay(reflectedOrigin, scatter.reflected.getDirection());
+    //         //    reflectedColor += castRay(scatter.reflected, scene, depth - 1, closest) * scatter.reflectionIndex;
+    //         //}
+    //         //reflectedColor /= 3;
+    //         //reflectedColor.clamp(0, 255);
+    //         //color = material->getColor(ray, rayHit) * scatter.attenuation * (1 - scatter.reflectionIndex);
+    //         //color += reflectedColor * scatter.reflectionIndex * scatter.attenuation;
+    //         Vector3D reflectedColor = castRay(scatter.reflected, scene, depth - 1, closest);
+    //         reflectedColor.clamp(0, 255);
+    //         color = material->getColor(ray, rayHit) * scatter.attenuation;
+    //         color += reflectedColor;
+    //     } else {
+    //         color = material->getColor(ray, rayHit);
+    //     }
+    //     color.clamp(0, 255);
+    //     for (const auto &light: scene.getLights()) {
+    //         finalColor += light->computeLights(color, ray, rayHit, scene.getPrimitives());
+    //     }
+    //     finalColor.clamp(0, 255);
+    //     return finalColor;
+    // }
 
     Vector3D ARender::randomInUnitSphere()
     {
@@ -239,4 +246,65 @@ namespace RayTracer::Render {
 
         std::cout << "[" << oss.str() << "] " << message << std::endl;
     }
+
+    Vector3D ARender::ray_Color(const Ray &ray, int depth, const Scene &scene)
+    {
+        HitRecord rec;
+        if (depth <= 0)
+            return Color(0,0,0);
+        
+        if (scene.hit(ray, Interval(0.001, infinity), rec)) {
+            Ray scattered;
+            Color attenuation;
+            if (rec.material->scatter(ray, rec, attenuation, scattered))
+                return attenuation * ray_Color(scattered, depth-1, scene);
+            return Color(0,0,0);
+        }
+
+        Vector3D unit_direction = Vector3D::unit_vector(ray.getDirection());
+        auto t = 0.5 * (unit_direction.getY() + 1.0);
+        Color color = (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
+
+        color.clamp(0, 255);
+
+        for (const auto &light: scene.getLights()) {
+            color += light->computeLights(color, ray, rec, scene.getPrimitives());
+        }
+
+        color.clamp(0, 255);
+        return color;
+        // return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
+    }
+    //     RayHit hit;
+    //     Color color(0, 0, 0);
+    //     Primitives::IPrimitive *closest = nullptr;
+    //     RayHit tmp;
+    //     tmp.distance = std::numeric_limits<double>::max();
+    //     hit.distance = std::numeric_limits<double>::max();
+    //     for (Primitives::IPrimitive *primitive: scene.getPrimitives()) {
+    //         bool hit = primitive->hit(ray, tmp);
+    //         if (hit && tmp.distance > 0 && (closest == nullptr || tmp.distance < hit.distance)) {
+    //             hit = tmp;
+    //             closest = primitive;
+    //         }
+    //     }
+    //     if (!closest)
+    //         return color;
+    //     Materials::Scatter scatter;
+    //     if (depth > 0 && closest->getMaterial()->scatter(ray, hit, scatter)) {
+    //         Ray reflectedRay = scatter.reflected;
+    //         Color reflectedColor = ray_Color(reflectedRay, depth - 1, scene);
+    //         reflectedColor.clamp(0, 255);
+    //         color = closest->getMaterial()->getColor(ray, hit) * scatter.attenuation;
+    //         color += reflectedColor * scatter.reflectionIndex * scatter.attenuation;
+    //     } else {
+    //         color = closest->getMaterial()->getColor(ray, hit);
+    //     }
+    //     color.clamp(0, 255);
+    //     for (const auto &light: scene.getLights()) {
+    //         color += light->computeLights(color, ray, hit, scene.getPrimitives());
+    //     }
+    //     color.clamp(0, 255);
+    //     return color;
+    // }
 }
