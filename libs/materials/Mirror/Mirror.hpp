@@ -16,8 +16,8 @@ namespace RayTracer::Materials {
             Mirror();
             ~Mirror();
 
-            bool scatter(const Ray &ray, const RayHit &hit, Scatter &scatter) const override;
-            Vector3D getColor(const Ray &ray, const RayHit &hit) const override;
+            bool scatter(const Ray &ray, HitRecord &rec, Vector3D &attenuation, Ray &scattered) const override;
+            Vector3D getColor(const Ray &ray, const HitRecord &hit) const override;
         protected:
         private:
     };
