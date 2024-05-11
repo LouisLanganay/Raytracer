@@ -42,7 +42,8 @@ namespace RayTracer::Primitives {
             void setScale(const Vector3D &scale) override;
             Matrix getTransformationMatrix() const override;
 
-            virtual bool hit(const Ray& ray, RayHit& hit) = 0;
+            virtual bool hit(const Ray& ray, Interval interval, HitRecord& rec) = 0;
+
 
         protected:
             std::string _type;
