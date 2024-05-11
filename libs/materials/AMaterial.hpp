@@ -14,6 +14,8 @@
 #include "../../src/Ray/RayHit.hpp"
 #include <string>
 
+class HitRecord;
+
 namespace RayTracer::Materials {
     class AMaterial : public IMaterial {
         public:
@@ -21,16 +23,15 @@ namespace RayTracer::Materials {
 
             void setColor(double r, double g, double b) override;
             void setName(const std::string &type) override;
-            virtual Vector3D getColor(const Ray &ray, const RayHit &hit) const = 0;
+            virtual Vector3D getColor(const Ray &ray, const HitRecord &hit) const = 0;
 
             Vector3D getColor() const override;
             std::string getName() const override;
 
-            virtual bool scatter(const Ray &ray, const RayHit &hit, Scatter &scatter) const = 0;
-
+            virtual bool scatter(const Ray &ray, HitRecord &rec, Vector3D &attenuation, Ray &scattered) const = 0;
         protected:
-            Vector3D _color;
             std::string _name;
+            Vector3D _color;
         private:
     };
 }
