@@ -21,6 +21,7 @@ VPATH 		+= ./src/Point
 VPATH 		+= ./src/Ray
 VPATH 		+= ./src/Rectangle
 VPATH 		+= ./src/Matrix
+VPATH 		+= ./src/Interval
 
 vpath %.cpp $(VPATH)
 
@@ -34,6 +35,7 @@ SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
 SRC 		+= Rectangle3D.cpp
 SRC 		+= Matrix.cpp
+SRC 		+= Interval.cpp
 
 BUILD_DIR 	= build
 OBJ 		:= $(SRC:%.c=$(BUILD_DIR)/%.o)
@@ -81,6 +83,7 @@ plugins:
 	@ make -s -C ./libs/render/PNG
 	@ make -s -C ./libs/materials/Flat
 	@ make -s -C ./libs/materials/Mirror
+	@ make -s -C ./libs/materials/Lambertian
 
 debug: CFLAGS += -g
 
@@ -99,6 +102,7 @@ clean:
 	@ make clean -s -C ./libs/render/PNG
 	@ make clean -s -C ./libs/materials/Flat
 	@ make clean -s -C ./libs/materials/Mirror
+	@ make clean -s -C ./libs/materials/Lambertian
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcda${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcno${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    *.gcov${_END}"
@@ -127,6 +131,7 @@ fclean: clean
 	@ make fclean -s -C ./libs/render/PNG
 	@ make fclean -s -C ./libs/materials/Flat
 	@ make fclean -s -C ./libs/materials/Mirror
+	@ make fclean -s -C ./libs/materials/Lambertian
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(BUILD_DIR)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)${_END}"
 	@ $(ECHO) "${_BLACK}${_BB_WHITE}-> $(RM)    $(NAME)_tests${_END}"
