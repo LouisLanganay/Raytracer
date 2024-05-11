@@ -144,3 +144,64 @@ Vector3D Vector3D::operator-() const
 {
     return Vector3D(-_x, -_y, -_z);
 }
+
+double Vector3D::random_double()
+{
+    return rand() / (RAND_MAX + 1.0);
+}
+
+double Vector3D::random_double(double min, double max)
+{
+    return min + (max - min) * random_double();
+}
+
+Vector3D Vector3D::random()
+{
+    return Vector3D(random_double(), random_double(), random_double());
+}
+
+Vector3D Vector3D::random(double min, double max)
+{
+    return Vector3D(random_double(min, max), random_double(min, max), random_double(min, max));
+}
+
+Vector3D Vector3D::random_unit_vector()
+{
+    return unit_vector(random());
+}
+
+Vector3D Vector3D::unit_vector()
+{
+    return unit_vector(*this);
+}
+
+Vector3D Vector3D::unit_vector(const Vector3D& vec)
+{
+    return vec / vec.length();
+}
+
+Vector3D operator*(double scalar, const Vector3D& vec)
+{
+    return vec * scalar;
+}
+
+bool Vector3D::near_zero() const
+{
+    const auto s = 1e-8;
+    return (fabs(_x) < s) && (fabs(_y) < s) && (fabs(_z) < s);
+}
+
+double Vector3D::getX() const
+{
+    return _x;
+}
+
+double Vector3D::getY() const
+{
+    return _y;
+}
+
+double Vector3D::getZ() const
+{
+    return _z;
+}
