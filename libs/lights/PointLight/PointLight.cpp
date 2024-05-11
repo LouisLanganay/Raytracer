@@ -17,21 +17,25 @@ namespace RayTracer::Lights
     Vector3D PointLight::computeLights(
         Vector3D color,
         const Ray &ray,
-        const RayHit &hit,
+        const HitRecord &hit,
         const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
         static constexpr double kShadowBias = 1e-5;
-        Vector3D lightDir = _position - hit.point;
-        Vector3D shadowDir = hit.point - _position;
+        Vector3D lightDir = _position - hit.p;
+        Vector3D shadowDir = hit.p - _position;
         Ray shadowRay(_position, shadowDir.getNormalized());
         double angle = hit.normal.dot(lightDir);
 
         for (const auto &primitive : primitives) {
             RayHit shadowHit;
-            if (primitive == hit.primitive)
-                continue;
-            if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
+            HitRecord shadowRecord;
+            // if (primitive == hit.primitive)
+            //     continue;
+            // if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
+            //     return Vector3D(0, 0, 0);
+            // }
+            if (primitive->hit(shadowRay, Interval(0.0, 0.9999), shadowRecord)) {
                 return Vector3D(0, 0, 0);
             }
         }
@@ -50,23 +54,29 @@ namespace RayTracer::Lights
     Vector3D PointLight::computeShadowIntensity(
         Vector3D color,
         const Ray &ray,
-        const RayHit &hit,
+        // const RayHit &hit,
+        const HitRecord &hit,
         const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
     ) const
     {
         static constexpr double kShadowBias = 1e-5;
-        Vector3D lightDir = _position - hit.point;
-        Vector3D shadowDir = hit.point - _position;
+        Vector3D lightDir = _position - hit.p;
+        Vector3D shadowDir = hit.p - _position;
         Ray shadowRay(_position, shadowDir.getNormalized());
         double angle = hit.normal.dot(lightDir);
 
         for (const auto &primitive : primitives) {
-            RayHit shadowHit;
-            if (primitive == hit.primitive)
-                continue;
-            if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
+            // RayHit shadowHit;
+            HitRecord shadowRecord;
+            // if (primitive == hit.primitive)
+            //     continue;
+            // if (primitive->hit(shadowRay, shadowHit) && shadowHit.distance < lightDir.length()) {
+            //     return Vector3D(0, 0, 0);
+            // }
+            if (primitive->hit(shadowRay, Interval(0.0, 0.9999), shadowRecord)) {
                 return Vector3D(0, 0, 0);
             }
+
         }
 
         double shadowIntensity = 1.0;
