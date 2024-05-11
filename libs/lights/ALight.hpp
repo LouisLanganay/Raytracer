@@ -34,7 +34,8 @@ namespace RayTracer::Lights {
             virtual Vector3D computeLights(
                 Vector3D color,
                 const Ray &ray,
-                const RayHit &hit,
+                // const RayHit &hit,
+                const HitRecord &hit,
                 const std::vector<RayTracer::Primitives::IPrimitive *> &primitives
             ) const = 0;
         protected:
