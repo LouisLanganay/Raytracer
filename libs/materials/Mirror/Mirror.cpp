@@ -18,12 +18,13 @@ namespace RayTracer::Materials {
     {
     }
 
-    bool Mirror::scatter(const Ray &ray, const RayHit &hit, Scatter &scatter) const
+    bool Mirror::scatter(const Ray &ray, HitRecord &rec, Vector3D &attenuation, Ray &scattered) const
     {
+        attenuation = _color;
         return false;
     }
 
-    Vector3D Mirror::getColor(const Ray &ray, const RayHit &hit) const
+    Vector3D Mirror::getColor(const Ray &ray, const HitRecord &hit) const
     {
         return _color;
     }
