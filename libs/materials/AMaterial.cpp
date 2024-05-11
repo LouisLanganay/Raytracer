@@ -13,7 +13,7 @@ namespace RayTracer::Materials {
         _color = Vector3D(r, g, b);
     }
 
-    Vector3D AMaterial::getColor() const
+    RayTracer::Vector3D AMaterial::getColor() const
     {
         return _color;
     }
