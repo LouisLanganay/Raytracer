@@ -10,6 +10,10 @@
 
 #include "../../src/Camera/Camera.hpp"
 #include "../../src/Scene/Scene.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 
 namespace RayTracer::Render {
 
@@ -25,6 +29,7 @@ namespace RayTracer::Render {
 
             virtual int getMaxDepth() const = 0;
             virtual int getSamples() const = 0;
+            virtual sf::Image renderVideo(Scene &scene, Camera &camera) = 0;
 
         protected:
         private:

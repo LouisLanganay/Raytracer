@@ -9,6 +9,7 @@
 #include "LibLoader.hpp"
 #include "Parser.hpp"
 #include "Exceptions.hpp"
+#include "Graphical.hpp"
 
 void displayHelp()
 {
@@ -21,8 +22,16 @@ void displayHelp()
 int main(int ac, char **av)
 {
     try {
-        if (ac != 2)
-            throw RayTracer::MainException("Invalid number of arguments");
+        if (ac != 2) {
+            std::string arg1 = av[1];
+            if (arg1 == "-graphic") {
+                Graphical graphical(av[2]);
+                graphical.run();
+                return 0;
+            } else
+                throw RayTracer::MainException("Invalid number of arguments");
+        }
+
         std::string arg1 = av[1];
         if (arg1 == "-h" || arg1 == "--help") {
             displayHelp();
