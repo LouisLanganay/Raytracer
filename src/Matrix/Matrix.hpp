@@ -11,6 +11,8 @@
 #include <vector>
 #include "../Point/Point3D.hpp"
 
+class Vector3D;
+
 namespace RayTracer {
     class Matrix {
         public:

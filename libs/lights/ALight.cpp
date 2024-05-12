@@ -29,6 +29,11 @@ namespace RayTracer::Lights {
         _intensity = intensity;
     }
 
+    void ALight::setAttenuation(double attenuation)
+    {
+        _attenuation = attenuation * 0.001;
+    }
+
     void ALight::setPosition(double x, double y, double z)
     {
         _position = Point3D(x, y, z);
@@ -47,6 +52,11 @@ namespace RayTracer::Lights {
     Point3D ALight::getPosition() const
     {
         return _position;
+    }
+
+    double ALight::getAttenuation() const
+    {
+        return _attenuation;
     }
 
     std::string ALight::getType() const
