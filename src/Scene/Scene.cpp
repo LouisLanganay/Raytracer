@@ -33,6 +33,11 @@ namespace RayTracer {
         _camera = camera.release();
     }
 
+    void Scene::setCamera(Camera *camera)
+    {
+        _camera = camera;
+    }
+
     const std::vector<Primitives::IPrimitive *> &Scene::getPrimitives() const
     {
         return _primitives;
@@ -46,5 +51,10 @@ namespace RayTracer {
     Camera *Scene::getCamera() const
     {
         return _camera;
+    }
+
+    void Scene::moveCamera(double x, double y, double z)
+    {
+        _camera->setOrigin(_camera->getOrigin()._x + x, _camera->getOrigin()._y + y, _camera->getOrigin()._z + z);
     }
 }
