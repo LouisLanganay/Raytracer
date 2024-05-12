@@ -114,8 +114,6 @@ namespace RayTracer::Graphical {
                 }
                 if (currentMode == mode::VIDEO)
                     handleVideoEvents();
-                if (currentMode == mode::MENU)
-                    handleMenuEvents();
             }
         }
     }
