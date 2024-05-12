@@ -34,15 +34,16 @@ SRC 		+= Vector3D.cpp
 SRC 		+= Ray.cpp
 SRC 		+= Rectangle3D.cpp
 SRC 		+= Matrix.cpp
+SRC 		+= Graphical.cpp
 
 BUILD_DIR 	= build
 OBJ 		:= $(SRC:%.c=$(BUILD_DIR)/%.o)
 
 VPATH_DIRS  := $(sort $(dir $(wildcard $(addsuffix /, $(VPATH)))))
-CFLAGS      := -std=c++20 -Wall -Wextra -iquote./includes -iquote./libs/lights
+CFLAGS      := -std=c++20 -Wall -Wextra -iquote./includes -iquote./libs/lights 
 CFLAGS		+= -iquote./libs/materials -iquote./libs/primitives -g
 CFLAGS      += $(foreach dir, $(VPATH_DIRS), -iquote$(dir))
-
+CFLAGS      += -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS 	= -lconfig++
 
 BUILD_DIR   = build

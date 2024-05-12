@@ -11,6 +11,10 @@
 #include "../ARender.hpp"
 #include "../../../src/Camera/Camera.hpp"
 #include <mutex>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 
 namespace RayTracer::Render {
     class PPMRender : public ARender {
@@ -19,6 +23,8 @@ namespace RayTracer::Render {
             virtual ~PPMRender() = default;
 
             virtual void render(Scene &scene) override;
+            virtual sf::Image renderVideo(Scene &scene, Camera &camera) override;
+            virtual sf::Image renderPreview(Scene &scene, Camera &camera) override;
         protected:
         private:
             std::vector<std::vector<Vector3D>> _image;

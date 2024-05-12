@@ -85,6 +85,32 @@ namespace RayTracer::Render {
         file.close();
     }
 
+    sf::Image PPMRender::renderVideo(Scene &scene, Camera &camera)
+    {
+        sf::Image image;
+        image.create(1920 / _quality, 1080 / _quality);
+        scene.setCamera(&camera);
+
+        for (int y = 0; y < 1080 / _quality; ++y) {
+            for (int x = 0; x < 1920 / _quality; ++x) {
+                Vector3D color = castRay(x / (1920 / (double)_quality), 1.0 - y / (1080 / (double)_quality), scene, _maxDepth);
+                int ir = static_cast<int>(color._x);
+                int ig = static_cast<int>(color._y);
+                int ib = static_cast<int>(color._z);
+                sf::Color pixelColor(ir, ig, ib);
+                image.setPixel(x, y, pixelColor);
+            }
+        }
+        return image;
+    }
+
+    sf::Image PPMRender::renderPreview(Scene &scene, Camera &camera)
+    {
+        sf::Image image;
+
+        return image;
+    }
+
 
     extern "C" std::unique_ptr<IRender> getEntryPoint()
     {

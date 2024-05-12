@@ -34,8 +34,10 @@ namespace RayTracer::Render {
 
             void setMaxDepth(int maxDepth) override;
             void setSamples(int samples) override;
+            void setQuality(int quality) override;
             int getMaxDepth() const override;
             int getSamples() const override;
+            int getQuality() const override;
 
         protected:
             std::string _filename;
@@ -43,6 +45,7 @@ namespace RayTracer::Render {
             int _samples;
             void updateProgress(int pixelsRendered, int totalPixels, std::string message = "");
             void log(const std::string &message);
+            int _quality;
         private:
             std::string _message;
             RayTracer::Lights::DirectionalLight *_light;
