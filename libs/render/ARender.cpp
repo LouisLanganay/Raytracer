@@ -69,6 +69,7 @@ namespace RayTracer::Render {
     {
         _startTime = time(0);
         _seed = static_cast<std::size_t>(time(nullptr));
+        _quality = 1;
     }
 
     void ARender::setFilename(const std::string &filename)
