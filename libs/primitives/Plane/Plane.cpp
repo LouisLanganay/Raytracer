@@ -40,13 +40,8 @@ namespace RayTracer::Primitives {
         double produitScalaire = normal.dot(ray.getDirection());
         if (std::abs(produitScalaire) > 0.0001) {
             // hit.distance = la distance rayon a laquelle il touche la forme par rapport a l'origine du rayon
-            //std::cout << "Center = " << _center._x  << " " << _center._y << " " << _center._z  << std::endl;
-            //std::cout << "Origin = " << ray.getOrigin()._x << " " << ray.getOrigin()._y << " " << ray.getOrigin()._z << std::endl;
-            //std::cout << "Normal = " << normal._x << " " << normal._y << " " << normal._z   << std::endl;
-            //std::cout << "Result = " << (_center - ray.getOrigin()).dot(normal) << std::endl;
             hit.distance = (_center - ray.getOrigin()).dot(normal) / produitScalaire;
             if (hit.distance >= 0) {
-                //std::cout << "HIT  " << hit.distance << std::endl;
                 hit.point = ray.getPointAt(hit.distance);
                 hit.normal = normal;
                 return true;
