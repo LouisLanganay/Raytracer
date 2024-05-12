@@ -8,7 +8,7 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
-#include "../Vector/Vector3D.hpp"
+class Vector3D;
 
 class Point3D {
     public:
@@ -31,7 +31,7 @@ class Point3D {
         Point3D operator-(const Vector3D& vec) const;
         Point3D& operator+=(const Vector3D& vec);
 
-
+        double length() const;
         double _x;
         double _y;
         double _z;

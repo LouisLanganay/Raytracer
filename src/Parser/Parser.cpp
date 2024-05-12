@@ -142,6 +142,14 @@ namespace RayTracer {
                 parseDouble(setting["direction"]["y"]),
                 parseDouble(setting["direction"]["z"])
             ));
+        if (setting.exists("attenuation"))
+            light->setAttenuation(parseDouble(setting["attenuation"]));
+        light->setColor(
+            parseDouble(setting["color"]["r"]),
+            parseDouble(setting["color"]["g"]),
+            parseDouble(setting["color"]["b"])
+        );
+        light->setIntensity(parseDouble(setting["intensity"]));
         _scene->addLight(light);
     }
 

@@ -6,6 +6,7 @@
 */
 
 #include "Vector3D.hpp"
+#include "../Point/Point3D.hpp"
 #include <cmath>
 
 Vector3D::Vector3D() : _x(0), _y(0), _z(0)
@@ -20,6 +21,13 @@ Vector3D::Vector3D(
     _y(y),
     _z(z)
 {
+}
+
+Vector3D::Vector3D(const Point3D &other)
+{
+    _x = other._x;
+    _y = other._y;
+    _z = other._z;
 }
 
 double Vector3D::length() const
@@ -94,6 +102,11 @@ void Vector3D::normalize()
     *this /= length();
 }
 
+bool Vector3D::isZero() const
+{
+    return _x == 0 && _y == 0 && _z == 0;
+}
+
 Vector3D Vector3D::getNormalized() const
 {
     double magnitude = sqrt(_x * _x + _y * _y + _z * _z);
@@ -101,6 +114,14 @@ Vector3D Vector3D::getNormalized() const
         return Vector3D(_x / magnitude, _y / magnitude, _z / magnitude);
     }
     return Vector3D();
+}
+
+Vector3D& Vector3D::operator=(Vector3D&& other)
+{
+    _x = other._x;
+    _y = other._y;
+    _z = other._z;
+    return *this;
 }
 
 Vector3D& Vector3D::operator=(const Vector3D& other)
@@ -111,11 +132,21 @@ Vector3D& Vector3D::operator=(const Vector3D& other)
     return *this;
 }
 
-Vector3D& Vector3D::operator=(Vector3D&& other)
+Vector3D Vector3D::operator-(const Point3D& other) const
 {
-    _x = other._x;
-    _y = other._y;
-    _z = other._z;
+    return Vector3D(_x - other._x, _y - other._y, _z - other._z);
+}
+
+Vector3D Vector3D::operator==(const Vector3D& other) const
+{
+    return Vector3D(_x == other._x, _y == other._y, _z == other._z);
+}
+
+Vector3D& Vector3D::operator*=(const Vector3D& other)
+{
+    _x *= other._x;
+    _y *= other._y;
+    _z *= other._z;
     return *this;
 }
 
