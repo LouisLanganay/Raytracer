@@ -217,6 +217,11 @@ namespace RayTracer::Render {
         _samples = samples;
     }
 
+    void ARender::setQuality(int quality)
+    {
+        _quality = quality;
+    }
+
     int ARender::getMaxDepth() const
     {
         return _maxDepth;
@@ -225,6 +230,11 @@ namespace RayTracer::Render {
     int ARender::getSamples() const
     {
         return _samples;
+    }
+
+    int ARender::getQuality() const 
+    {
+        return _quality;
     }
 
     void ARender::log(const std::string &message)
@@ -239,4 +249,5 @@ namespace RayTracer::Render {
 
         std::cout << "[" << oss.str() << "] " << message << std::endl;
     }
+
 }
