@@ -53,8 +53,7 @@ namespace RayTracer::Render {
 
         for (int y = 0; y < 1080 / _quality; ++y) {
             for (int x = 0; x < 1920 / _quality; ++x) {
-                // Vector3D color = castRay(x / (1920 / double(_quality)), 1.0 - y / (1080 / double(_quality)), scene, _maxDepth);
-                Vector3D color = castRay(x / (1920 / 4.0), 1.0 - y / (1080 / 4.0), scene, 4);
+                Vector3D color = castRay(x / (1920 / (double)_quality), 1.0 - y / (1080 / (double)_quality), scene, _maxDepth);
                 int ir = static_cast<int>(color._x);
                 int ig = static_cast<int>(color._y);
                 int ib = static_cast<int>(color._z);
