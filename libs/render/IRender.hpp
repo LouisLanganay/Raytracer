@@ -30,7 +30,7 @@ namespace RayTracer::Render {
             virtual int getMaxDepth() const = 0;
             virtual int getSamples() const = 0;
             virtual sf::Image renderVideo(Scene &scene, Camera &camera) = 0;
-
+            virtual sf::Image renderPreview(Scene &scene, Camera &camera) = 0;
         protected:
         private:
     };
