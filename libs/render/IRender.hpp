@@ -26,9 +26,11 @@ namespace RayTracer::Render {
             virtual void setFilename(const std::string &filename) = 0;
             virtual void setMaxDepth(int maxDepth) = 0;
             virtual void setSamples(int samples) = 0;
+            virtual void setQuality(int quality) = 0;
 
             virtual int getMaxDepth() const = 0;
             virtual int getSamples() const = 0;
+            virtual int getQuality() const = 0;
             virtual sf::Image renderVideo(Scene &scene, Camera &camera) = 0;
             virtual sf::Image renderPreview(Scene &scene, Camera &camera) = 0;
         protected:
