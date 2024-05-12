@@ -24,6 +24,7 @@ namespace RayTracer {
     }
 
     void Scene::addLight(std::unique_ptr<Lights::ILight> &light)
+
     {
         _lights.push_back(light.release());
     }
