@@ -23,8 +23,6 @@ enum mode {
 };
 
 namespace RayTracer::Graphical {
-
-
     const std::string vertexShader = R"(
         void main()
         {
@@ -43,7 +41,7 @@ namespace RayTracer::Graphical {
         {
             vec2 texCoord = gl_TexCoord[0].xy;
             vec4 color = texture2D(texture, texCoord) * 0.0625; // Center weight
-            
+
             for (int i = -KERNEL_SIZE/2; i <= KERNEL_SIZE/2; ++i)
             {
                 float weight = 1.0 / float(KERNEL_SIZE);

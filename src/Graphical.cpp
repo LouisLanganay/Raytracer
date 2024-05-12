@@ -9,7 +9,6 @@
 #include "../libs/render/PNG/PNGRender.hpp"
 
 namespace RayTracer::Graphical {
-
     Graphical::Graphical(char *path, int quality)
     {
         window.create(sf::VideoMode(1920, 1080), "Raytracer");
@@ -29,7 +28,6 @@ namespace RayTracer::Graphical {
         render->setSamples(4);
         render->setMaxDepth(4);
         render->setQuality(quality);
-            
         camera = scene->getCamera();
         camera->setResolution(1920 / render->getQuality(), 1080 / render->getQuality());
 
@@ -64,24 +62,18 @@ namespace RayTracer::Graphical {
     void Graphical::renderMenu()
     {
         window.clear(sf::Color::Black);
-        
         sf::RenderTexture backgroundTexture;
         backgroundTexture.create(1920, 1080);
-        
         backgroundTexture.clear();
         backgroundTexture.draw(RenderedImage);
         backgroundTexture.display();
-        
         sf::Shader blurShader;
         blurShader.loadFromMemory(vertexShader, gaussianBlurFragmentShader);
         blurShader.setUniform("texture", backgroundTexture.getTexture());
-        blurShader.setUniform("offset", sf::Vector2f(1.f / 1920, 0.f)); // Horizontal blur
-        
+        blurShader.setUniform("offset", sf::Vector2f(1.f / 1920, 0.f));
         sf::Sprite blurredBackground(backgroundTexture.getTexture());
         window.draw(blurredBackground, &blurShader);
-        
         sf::RectangleShape MenuRect(sf::Vector2f(600, 500));
-        
         MenuRect.setFillColor(sf::Color::White);
         MenuRect.setPosition(1920 / 2 - 300, 1080 / 2 - 250);
         window.draw(MenuRect);
@@ -192,7 +184,7 @@ namespace RayTracer::Graphical {
     }
 
     void Graphical::run()
-    {    
+    {
         while (window.isOpen()) {
             handleEvents();
             (currentMode == mode::VIDEO) ? renderVideo() : renderMenu();

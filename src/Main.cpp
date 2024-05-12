@@ -17,7 +17,7 @@ void displayHelp()
     std::cout << "\t./raytracer <SCENE_FILE>" << std::endl;
     std::cout << "DESCRIPTION" << std::endl;
     std::cout << "\tSCENE_FILE\tfile describing the scene" << std::endl;
-    std::cout << "GRAPHICAL MODE" << std::endl;
+    std::cout << "\nGRAPHICAL MODE" << std::endl;
     std::cout << "\t./raytracer -graphic <SCENE_FILE> <QUALITY>" << std::endl;
     std::cout << "DESCRIPTION" << std::endl;
     std::cout << "\tSCENE_FILE\tfile describing the scene" << std::endl;
