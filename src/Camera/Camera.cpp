@@ -67,4 +67,18 @@ namespace RayTracer {
         Vector3D direction = (_screen.pointAt(u, v) - _origin);
         return Ray(_origin, direction);
     }
+
+    void Camera::moveCamera(double x, double y, double z)
+    {
+        _origin._x += x;
+        _origin._y += y;
+        _origin._z += z;
+    }
+
+    void Camera::rotateCamera(double x, double y, double z)
+    {
+        _rotation._x += x;
+        _rotation._y += y;
+        _rotation._z += z;
+    }
 }

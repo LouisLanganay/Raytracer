@@ -33,6 +33,8 @@ namespace RayTracer {
             Point3D getOrigin() const;
             Point3D getRotation() const;
             double getFov() const;
+            void moveCamera(double x, double y, double z);
+            void rotateCamera(double x, double y, double z);
 
             Ray generateRay(double u, double v) const;
 
