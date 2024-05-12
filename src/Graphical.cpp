@@ -86,7 +86,7 @@ namespace RayTracer::Graphical {
         MenuRect.setPosition(1920 / 2 - 300, 1080 / 2 - 250);
         window.draw(MenuRect);
 
-        text.setColor(sf::Color(0, 0, 0, 255));
+        text.setFillColor(sf::Color::Black);
         text.setString("Quality: " + std::to_string(render->getQuality()));
         int textWidth = text.getLocalBounds().width;
         text.setPosition(1920 / 2 - textWidth / 2, 1080 / 2);
@@ -100,7 +100,7 @@ namespace RayTracer::Graphical {
         text.setPosition(1920 / 2 - textWidth / 2, 1080 / 2 - 200);
         window.draw(text);
         window.display();
-        text.setColor(sf::Color(255, 255, 255, 255));
+        text.setFillColor(sf::Color::White);
     }
 
     void Graphical::handleEvents()
