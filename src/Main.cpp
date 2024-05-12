@@ -25,8 +25,8 @@ int main(int ac, char **av)
         if (ac != 2) {
             std::string arg1 = av[1];
             if (arg1 == "-graphic") {
-                Graphical graphical(av[2]);
-                graphical.run();
+                std::unique_ptr<RayTracer::Graphical::Graphical> graphical = std::make_unique<RayTracer::Graphical::Graphical>(av[2]);
+                graphical->run();
                 return 0;
             } else
                 throw RayTracer::MainException("Invalid number of arguments");
