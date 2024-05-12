@@ -10,7 +10,7 @@
 
 namespace RayTracer::Graphical {
 
-    Graphical::Graphical(char *path)
+    Graphical::Graphical(char *path, int quality)
     {
         window.create(sf::VideoMode(1920, 1080), "Raytracer");
 
@@ -28,7 +28,7 @@ namespace RayTracer::Graphical {
         render = parser.getRender();
         render->setSamples(4);
         render->setMaxDepth(4);
-        render->setQuality(4);
+        render->setQuality(quality);
             
         camera = scene->getCamera();
         camera->setResolution(1920 / render->getQuality(), 1080 / render->getQuality());

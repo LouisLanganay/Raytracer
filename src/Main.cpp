@@ -25,7 +25,8 @@ int main(int ac, char **av)
         if (ac != 2) {
             std::string arg1 = av[1];
             if (arg1 == "-graphic") {
-                std::unique_ptr<RayTracer::Graphical::Graphical> graphical = std::make_unique<RayTracer::Graphical::Graphical>(av[2]);
+                int quality = std::atoi(av[3]);
+                std::unique_ptr<RayTracer::Graphical::Graphical> graphical = std::make_unique<RayTracer::Graphical::Graphical>(av[2], quality);
                 graphical->run();
                 return 0;
             } else

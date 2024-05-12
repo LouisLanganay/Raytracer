@@ -56,7 +56,7 @@ namespace RayTracer::Graphical {
     )";
     class Graphical {
         public:
-            Graphical(char *path);
+            Graphical(char *path, int quality);
             ~Graphical();
             void run();
             void renderVideo();
