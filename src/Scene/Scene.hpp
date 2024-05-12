@@ -23,10 +23,12 @@ namespace RayTracer {
             void addPrimitive(std::unique_ptr<Primitives::IPrimitive> &primitive);
             void addLight(std::unique_ptr<Lights::ILight> &light);
             void setCamera(std::unique_ptr<Camera> &camera);
+            void setCamera(Camera *camera);
 
             const std::vector<Primitives::IPrimitive *> &getPrimitives() const;
             const std::vector<Lights::ILight *> &getLights() const;
             Camera *getCamera() const;
+            void moveCamera(double x, double y, double z);
 
         protected:
         private:
