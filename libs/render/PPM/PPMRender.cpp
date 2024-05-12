@@ -92,6 +92,13 @@ namespace RayTracer::Render {
         return image;
     }
 
+    sf::Image PPMRender::renderPreview(Scene &scene, Camera &camera)
+    {
+        sf::Image image;
+
+        return image;
+    }
+
 
     extern "C" std::unique_ptr<IRender> getEntryPoint()
     {
