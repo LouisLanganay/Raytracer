@@ -16,6 +16,11 @@ Your goal is to create a program able to generate an image from a file describin
 > [!IMPORTANT]
 > View the GitHub WIKI for more information about the project. :warning:
 
+## Requirements
+
+- [SFML 2.5.1](https://www.sfml-dev.org/download.php)
+- [libconfig++](https://hyperrealm.github.io/libconfig/)
+
 ## Usage
 
 ### Build
