@@ -40,9 +40,27 @@ namespace RayTracer::Render {
             }
             {
                 std::lock_guard<std::mutex> lock(_mutex);
-                updateProgress(_pixelsRendered, width * height, "Rendering");
             }
         }
+    }
+
+    sf::Image PNGRender::renderVideo(Scene &scene, Camera &camera)
+    {
+        sf::Image image;
+        image.create(1920, 1080);
+        scene.setCamera(&camera);
+
+        for (int y = 0; y < 1080; ++y) {
+            for (int x = 0; x < 1920; ++x) {
+                Vector3D color = castRay(x / 1920.0, 1.0 - y / 1080.0, scene, 4);
+                int ir = static_cast<int>(color._x);
+                int ig = static_cast<int>(color._y);
+                int ib = static_cast<int>(color._z);
+                sf::Color pixelColor(ir, ig, ib);
+                image.setPixel(x, y, pixelColor);
+            }
+        }
+        return image;
     }
 
     void PNGRender::render(Scene &scene) {
@@ -86,8 +104,6 @@ namespace RayTracer::Render {
         log("Saving image to file " + _filename);
         image.saveToFile(_filename);
     }
-
-
 
     extern "C" std::unique_ptr<IRender> getEntryPoint()
     {

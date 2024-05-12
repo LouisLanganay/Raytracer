@@ -19,6 +19,7 @@ namespace RayTracer::Render {
             ~PNGRender();
 
             virtual void render(Scene &scene) override;
+            virtual sf::Image renderVideo(Scene &scene, Camera &camera) override;
         protected:
         private:
             std::vector<std::vector<Vector3D>> _image;
