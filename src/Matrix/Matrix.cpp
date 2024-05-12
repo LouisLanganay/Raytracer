@@ -6,6 +6,7 @@
 */
 
 #include "Matrix.hpp"
+#include "../Vector/Vector3D.hpp"
 #include <iostream>
 
 namespace RayTracer {
